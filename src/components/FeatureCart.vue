@@ -82,7 +82,6 @@ export default {
   margin: 0;
 }
 
-/* Адаптивность */
 @media (max-width: 1440px) {
   .feature-card {
     height: 320px;

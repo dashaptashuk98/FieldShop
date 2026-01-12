@@ -1,4 +1,4 @@
-<!-- src/components/common/Button.vue -->
+<!-- ButtonComponent.vue - ПРОСТОЙ ВАРИАНТ -->
 <template>
   <button
     :class="['btn', `btn--${variant}`]"
@@ -6,7 +6,16 @@
     :disabled="disabled"
     @click="$emit('click', $event)"
   >
-    <slot />
+    <img
+      v-if="icon"
+      :src="icon"
+      :alt="iconAlt"
+      :class="['btn__icon', `btn__icon--${iconPosition}`]"
+    />
+
+    <span class="btn__text">
+      <slot />
+    </span>
   </button>
 </template>
 
@@ -25,6 +34,19 @@ export default {
     disabled: {
       type: Boolean,
       default: false
+    },
+    icon: {
+      type: String,
+      default: null
+    },
+    iconPosition: {
+      type: String,
+      default: 'left',
+      validator: (value) => ['left', 'right'].includes(value)
+    },
+    iconAlt: {
+      type: String,
+      default: 'icon'
     }
   },
   emits: ['click']
@@ -33,6 +55,10 @@ export default {
 
 <style scoped>
 .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   padding: 15px 30px;
   width: 148px;
   height: 57px;
@@ -44,6 +70,24 @@ export default {
   transition: all 0.3s ease;
   border: none;
   outline: none;
+}
+
+.btn__icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+.btn__icon--left {
+  order: 1;
+}
+
+.btn__icon--right {
+  order: 3;
+}
+
+.btn__text {
+  order: 2;
 }
 
 .btn--primary {
@@ -60,6 +104,18 @@ export default {
   background-color: transparent;
   color: #000000;
   border: 2px solid #000000;
+}
+
+.btn--outlineGreen {
+  background-color: transparent;
+  color: #000000;
+  border: 2px solid rgba(104, 208, 23, 1);
+}
+
+.btn--Green {
+  background-color: transparent;
+  color: rgba(104, 208, 23, 1);
+  border: none;
 }
 
 .btn--outline:hover {
