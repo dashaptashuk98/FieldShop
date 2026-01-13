@@ -20,8 +20,8 @@
                   <span class="info__title">Sort by</span>
                   <select class="info__select" id="info__select">
                     <option value="value1">All</option>
-                    <option value="value2">Опция 2</option>
-                    <option value="value3">Опция 3</option>
+                    <option value="value2">Price</option>
+                    <option value="value3">Size</option>
                   </select>
                 </div>
                 <ButtonComponent

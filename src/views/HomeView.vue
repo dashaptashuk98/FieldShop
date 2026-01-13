@@ -1,4 +1,3 @@
-<!-- src/views/HomeView.vue -->
 <script>
 import AppHeader from '@/components/AppHeader.vue'
 import ButtonComponent from '@/components/ButtonComponent.vue'

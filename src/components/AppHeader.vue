@@ -5,19 +5,25 @@
         <div class="nav-menu">
           <ul class="nav-menu__list">
             <li class="nav-menu__item">
-              <router-link to="/" class="nav-menu__link">Home</router-link>
+              <router-link to="/" exact-active-class="active" class="nav-menu__link"
+                >Home</router-link
+              >
             </li>
             <li class="nav-menu__item">
-              <router-link to="/locations" class="nav-menu__link">Locations</router-link>
+              <router-link to="/locations" active-class="active" class="nav-menu__link"
+                >Locations</router-link
+              >
             </li>
             <li class="nav-menu__item">
-              <router-link to="/contacts" class="nav-menu__link">Contacts</router-link>
+              <router-link to="/" class="nav-menu__link">Contacts</router-link>
             </li>
             <li class="nav-menu__item">
-              <router-link to="/shop" class="nav-menu__link">Shop</router-link>
+              <router-link to="/shop" active-class="active" class="nav-menu__link"
+                >Shop</router-link
+              >
             </li>
             <li class="nav-menu__item">
-              <router-link to="/wallet" class="nav-menu__link">Wallet</router-link>
+              <router-link to="/" class="nav-menu__link">Wallet</router-link>
             </li>
           </ul>
         </div>
@@ -109,10 +115,12 @@ export default {
   transform: translateX(-50%);
   transition: width 0.3s ease;
 }
-
-.nav-menu__link:hover::after,
+.nav-menu__link.active {
+  opacity: 1;
+}
 .nav-menu__link.active::after {
   width: 100%;
+  opacity: 1;
 }
 
 .user-actions {

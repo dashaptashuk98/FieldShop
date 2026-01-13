@@ -5,7 +5,10 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    component: HomeView
+    component: HomeView,
+    meta: {
+      bodyColor: 'rgba(240, 254, 226, 1)'
+    }
   },
 
   {
@@ -25,5 +28,9 @@ const router = createRouter({
   history: createWebHistory(),
   routes
 })
-
+router.beforeEach((to, from, next) => {
+  const bodyColor = to.meta.bodyColor || '#ffffff'
+  document.body.style.backgroundColor = bodyColor
+  next()
+})
 export default router

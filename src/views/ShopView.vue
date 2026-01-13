@@ -3,6 +3,35 @@
     <AppHeader />
     <main class="main-content">
       <div class="container">
+        <span class="product__invest">Invest</span>
+        <div class="info__header">
+          <div class="info__filter">
+            <span class="info__title">Sort by</span>
+            <select class="info__select" id="info__select">
+              <option value="value1">All</option>
+              <option value="value2">Price</option>
+              <option value="value3">Size</option>
+            </select>
+          </div>
+          <ButtonComponent
+            :icon="FilterIcon"
+            icon-position="right"
+            iconAlt="Filter"
+            variant="outline"
+            class="btnFilter"
+          >
+            Filter
+          </ButtonComponent>
+          <ButtonComponent
+            :icon="MapIcon"
+            iconAlt="Map"
+            variant="primary"
+            class="btnMap"
+            @click="MoveToLocations"
+          >
+            Map
+          </ButtonComponent>
+        </div>
         <div class="products-grid">
           <div class="products-list">
             <div v-for="product in products" :key="product.id" class="product-card">
@@ -10,8 +39,20 @@
               <div class="product-info">
                 <h3 class="product-title">{{ product.title }}</h3>
                 <p class="product-country">UK</p>
-                <p class="product-size">Size: {{ product.discountPercentage }}</p>
-                <p class="product-price">Price: {{ product.price }}</p>
+                <p class="product-size">
+                  <span class="product-label">Size: </span>
+                  <span class="product-value">{{ product.discountPercentage }}</span>
+                </p>
+                <p class="product-price">
+                  <span class="product-label">Price: </span>
+                  <span class="product-value">${{ product.price }}</span>
+                </p>
+                <div class="button__container">
+                  <ButtonComponent variant="outlineGreen" class="btnInvest">
+                    Invest
+                  </ButtonComponent>
+                  <ButtonComponent variant="Green" class="btnReserve"> Reserve </ButtonComponent>
+                </div>
               </div>
             </div>
           </div>
@@ -23,17 +64,22 @@
 
 <script>
 import AppHeader from '@/components/AppHeader.vue'
-
+import MapIcon from '@/assets/images/marker-02.svg'
+import FilterIcon from '@/assets/images/filter-edit.svg'
+import ButtonComponent from '@/components/ButtonComponent.vue'
 export default {
   name: 'ShopView',
   components: {
-    AppHeader
+    AppHeader,
+    ButtonComponent
   },
   data() {
     return {
       products: [],
       loading: false,
-      error: null
+      error: null,
+      MapIcon: MapIcon,
+      FilterIcon: FilterIcon
     }
   },
   async created() {
@@ -44,11 +90,19 @@ export default {
     } catch (error) {
       console.error('Error fetching data:', error)
     }
+  },
+  methods: {
+    MoveToLocations() {
+      this.$router.push('/locations')
+    }
   }
 }
 </script>
 
 <style scoped>
+body {
+  background-color: white;
+}
 .container {
   max-width: 1920px;
   margin: 0 auto;
@@ -84,6 +138,8 @@ export default {
   overflow: hidden;
   transition: all 0.3s ease;
   background: white;
+  display: flex;
+  flex-direction: column;
 }
 
 .product-image {
@@ -94,22 +150,140 @@ export default {
 }
 
 .product-info {
-  padding: 20px;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex-grow: 1;
+}
+
+.product-size,
+.product-price {
+  margin: 0;
 }
 
 .product-title {
-  font-family: 'DM Serif Text', serif;
-  font-size: 20px;
-  color: #353640;
-  margin: 0 0 10px 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  font-family: 'DM Sans';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 31px;
+  color: rgba(34, 34, 34, 1);
+  margin: 0;
 }
 
-.product-price {
-  font-family: 'DM Sans', sans-serif;
+.product-country {
+  font-family: 'DM Sans';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 26px;
+  color: #9c9c9c;
+  margin: 0;
+}
+
+.btnFilter {
+  width: 107px;
+  height: 44px;
+}
+
+.btnMap {
+  width: 133px;
+  height: 44px;
+}
+
+.btnInvest {
+  width: 133px;
+  height: 51px;
+}
+
+.btnReserve {
+  width: 133px;
+  height: 51px;
+}
+
+.button__container {
+  display: flex;
+  gap: 10px;
+  margin-top: auto;
+  padding-top: 20px;
+}
+
+.product__invest {
+  font-family: 'DM Sans';
+  font-style: normal;
+  font-weight: 400;
   font-size: 24px;
+  line-height: 31px;
+  display: flex;
+  align-items: center;
+  display: inline-flex;
+  color: #222222;
+  padding-bottom: 10px;
+  border-bottom: 5px solid rgba(104, 208, 23, 1);
+  margin-bottom: 54px;
+}
+
+.info__header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 50px;
+  margin-bottom: 55px;
+}
+
+.info__filter {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.info__title {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 18px;
+  color: #353640;
+  font-weight: 500;
+}
+
+.info__select {
+  width: 67px;
+  padding: 10px 0 10px 12px;
+  border: none;
+  background: transparent;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 20px;
+  font-weight: 500;
+  color: #000;
+  cursor: pointer;
+  background: url('@/assets/images/Vector.svg') no-repeat right 16px center / 8px;
+  background-color: transparent;
+  appearance: none;
+}
+
+.product-label {
+  font-family: 'DM Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 26px;
+  color: #9c9c9c;
+  margin: 0;
+}
+
+.product-value {
+  font-family: 'DM Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 26px;
+  color: #222222;
+  margin: 0;
+}
+
+.info__select:focus {
+  outline: none;
+  border-color: #68d017;
 }
 
 @media (max-width: 1200px) {
