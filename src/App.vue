@@ -2,23 +2,23 @@
   <div id="app">
     <router-view />
 
-    <AuthModal
+    <!-- <AuthModal
       v-if="showAuthModal"
       :initial-modal="authModalType"
       @close="closeAuthModal"
       @login="handleLogin"
       @register="handleRegister"
-    />
+    /> -->
   </div>
 </template>
 
 <script>
-import AuthModal from './components/AuthModal.vue'
+// import AuthModal from './components/AuthModal.vue'
 
 export default {
   name: 'App',
   components: {
-    AuthModal
+    // AuthModal
   },
   data() {
     return {

@@ -51,6 +51,7 @@
 <script>
 export default {
   name: 'AppHeader',
+
   data() {
     return {
       cartCount: 0

@@ -7,10 +7,10 @@
         <div class="info__header">
           <div class="info__filter">
             <span class="info__title">Sort by</span>
-            <select class="info__select" id="info__select">
-              <option value="value1">All</option>
-              <option value="value2">Price</option>
-              <option value="value3">Size</option>
+            <select v-model="sortBy" class="info__select">
+              <option value="all">All</option>
+              <option value="price">Price</option>
+              <option value="size">Size</option>
             </select>
           </div>
           <ButtonComponent
@@ -34,7 +34,7 @@
         </div>
         <div class="products-grid">
           <div class="products-list">
-            <div v-for="product in products" :key="product.id" class="product-card">
+            <div v-for="product in sortProducts" :key="product.id" class="product-card">
               <img :src="product.thumbnail" :alt="product.title" class="product-image" />
               <div class="product-info">
                 <h3 class="product-title">{{ product.title }}</h3>
@@ -79,7 +79,25 @@ export default {
       loading: false,
       error: null,
       MapIcon: MapIcon,
-      FilterIcon: FilterIcon
+      FilterIcon: FilterIcon,
+      sortBy: 'all'
+    }
+  },
+  computed: {
+    sortProducts() {
+      if (this.sortBy === 'all') return this.products
+
+      const copy = [...this.products]
+
+      if (this.sortBy === 'price') {
+        return copy.sort((a, b) => a.price - b.price)
+      }
+
+      if (this.sortBy === 'size') {
+        return copy.sort((a, b) => a.discountPercentage - b.discountPercentage)
+      }
+
+      return this.products
     }
   },
   async created() {
@@ -247,18 +265,13 @@ body {
 }
 
 .info__select {
-  width: 67px;
-  padding: 10px 0 10px 12px;
   border: none;
   background: transparent;
   font-family: 'DM Sans', sans-serif;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 500;
   color: #000;
   cursor: pointer;
-  background: url('@/assets/images/Vector.svg') no-repeat right 16px center / 8px;
-  background-color: transparent;
-  appearance: none;
 }
 
 .product-label {

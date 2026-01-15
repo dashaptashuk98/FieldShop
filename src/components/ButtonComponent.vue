@@ -1,4 +1,3 @@
-<!-- ButtonComponent.vue - ПРОСТОЙ ВАРИАНТ -->
 <template>
   <button
     :class="['btn', `btn--${variant}`]"

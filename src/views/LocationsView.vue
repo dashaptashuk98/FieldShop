@@ -8,7 +8,11 @@
           <h1 class="locations__title">Locations</h1>
           <div class="form__search">
             <img class="header__center-img" src="@/assets/images/search.svg" alt="Поиск" />
-            <input type="text" class="header__center-search" placeholder="Поиск" />
+            <input
+              type="text"
+              class="header__center-search"
+              placeholder="Search by city, country, village places"
+            />
             <ButtonComponent class="search-clear" variant="primary"> Search </ButtonComponent>
           </div>
         </section>
@@ -219,8 +223,6 @@ export default {
 }
 
 .info__select {
-  width: 67px;
-  padding: 10px 0 10px 12px;
   border: none;
   background: transparent;
   font-family: 'DM Sans', sans-serif;
@@ -228,9 +230,6 @@ export default {
   font-weight: 500;
   color: #000;
   cursor: pointer;
-  background: url('@/assets/images/Vector.svg') no-repeat right 16px center / 8px;
-  background-color: transparent;
-  appearance: none;
 }
 
 .info__select:focus {
