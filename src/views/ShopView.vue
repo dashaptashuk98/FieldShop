@@ -1,6 +1,5 @@
 <template>
   <div class="shop-view">
-    <AppHeader />
     <main class="main-content">
       <div class="container">
         <span class="product__invest">Invest</span>
@@ -63,14 +62,12 @@
 </template>
 
 <script>
-import AppHeader from '@/components/AppHeader.vue'
 import MapIcon from '@/assets/images/marker-02.svg'
 import FilterIcon from '@/assets/images/filter-edit.svg'
 import ButtonComponent from '@/components/ButtonComponent.vue'
 export default {
   name: 'ShopView',
   components: {
-    AppHeader,
     ButtonComponent
   },
   data() {

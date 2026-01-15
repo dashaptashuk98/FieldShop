@@ -27,20 +27,41 @@
             </li>
           </ul>
         </div>
+
         <div class="user-actions">
           <div class="cart">
             <img class="cart__icon" src="@/assets/images/Icon.svg" alt="Shopping cart" />
             <span class="cart__count">{{ cartCount }}</span>
           </div>
-          <div class="user-profile">
-            <div class="user-avatar">
-              <img
-                src="@/assets/images/6786bf8ee56da6f5759fbc498844a60864be656a.jpg"
-                alt="User avatar"
-                class="user-avatar__image"
-              />
+
+          <div class="user-profile" v-if="isAuthenticated && currentUser">
+            <div class="user-info-compact">
+              <div class="user-avatar">
+                <img
+                  v-if="currentUser.image"
+                  :src="currentUser.image"
+                  :alt="currentUser.firstName"
+                  class="user-avatar__image"
+                />
+                <img
+                  v-else
+                  src="@/assets/images/user.svg"
+                  :alt="currentUser.firstName"
+                  class="user-avatar__image"
+                />
+              </div>
+              <div class="user-details">
+                <span class="user-name">{{ currentUser.firstName || currentUser.username }}</span>
+              </div>
             </div>
-            <img class="user-profile__dropdown" src="@/assets/images/Vector.svg" alt="Menu" />
+            <button class="logout-btn-header" @click="handleLogout" title="Logout">
+              <img src="@/assets/images/login-svgrepo-com.svg" alt="Logout" class="logout-icon" />
+            </button>
+          </div>
+
+          <div class="login-icon" v-else @click="openLoginModal">
+            <img src="@/assets/images/user.svg" alt="Login" class="login-icon__image" />
+            <span class="login-text">Login</span>
           </div>
         </div>
       </nav>
@@ -49,12 +70,34 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
+
 export default {
   name: 'AppHeader',
 
   data() {
     return {
       cartCount: 0
+    }
+  },
+
+  computed: {
+    ...mapGetters(['isAuthenticated', 'currentUser'])
+  },
+
+  methods: {
+    ...mapActions(['logout']),
+
+    handleLogout() {
+      if (confirm('Are you sure you want to logout?')) {
+        this.logout()
+
+        this.$router.push('/')
+      }
+    },
+
+    openLoginModal() {
+      this.$emit('open-login')
     }
   }
 }
@@ -154,14 +197,24 @@ export default {
 .user-profile {
   display: flex;
   align-items: center;
+  gap: 15px;
+}
+
+.user-info-compact {
+  display: flex;
+  align-items: center;
   gap: 10px;
 }
 
 .user-avatar {
-  width: 46px;
-  height: 46px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   overflow: hidden;
+  background: #68d017;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .user-avatar__image {
@@ -170,6 +223,76 @@ export default {
   object-fit: cover;
 }
 
+.user-avatar__placeholder {
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-name {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #222;
+  white-space: nowrap;
+}
+
+.logout-btn-header {
+  background: none;
+  border: none;
+  padding: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  transition: background-color 0.2s;
+}
+
+.logout-btn-header:hover {
+  background: rgba(255, 68, 68, 0.1);
+}
+
+.logout-icon {
+  width: 18px;
+  height: 18px;
+}
+
+.login-icon {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  padding: 8px 16px;
+  border-radius: 20px;
+  background: rgba(104, 208, 23, 0.1);
+  border: 1px solid rgba(104, 208, 23, 0.2);
+  transition: all 0.2s ease;
+}
+
+.login-icon:hover {
+  background: rgba(104, 208, 23, 0.2);
+}
+
+.login-icon__image {
+  width: 20px;
+  height: 20px;
+}
+
+.login-text {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  color: #222;
+  font-weight: 500;
+}
+
+/* Адаптивность */
 @media (max-width: 1024px) {
   .header__nav {
     flex-wrap: wrap;
@@ -183,6 +306,10 @@ export default {
 
   .nav-menu__link {
     font-size: 18px;
+  }
+
+  .user-actions {
+    gap: 20px;
   }
 }
 
@@ -200,6 +327,42 @@ export default {
     flex-direction: column;
     align-items: center;
     gap: 15px;
+  }
+
+  .user-profile {
+    padding: 6px 12px;
+    gap: 10px;
+  }
+
+  .user-name {
+    font-size: 12px;
+  }
+
+  .login-icon {
+    padding: 6px 12px;
+  }
+
+  .login-text {
+    font-size: 12px;
+  }
+}
+
+/* Темная тема */
+@media (prefers-color-scheme: dark) {
+  .nav-menu__link {
+    color: #fff;
+  }
+
+  .user-name {
+    color: #fff;
+  }
+
+  .login-text {
+    color: #fff;
+  }
+
+  .user-avatar__placeholder {
+    color: #fff;
   }
 }
 </style>

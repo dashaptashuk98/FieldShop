@@ -1,5 +1,4 @@
 <script>
-import AppHeader from '@/components/AppHeader.vue'
 import ButtonComponent from '@/components/ButtonComponent.vue'
 import FeatureCard from '@/components/FeatureCart.vue'
 import cabageImage from '@/assets/images/cabage.jpg'
@@ -10,7 +9,6 @@ import searchIcon from '@/assets/images/growth.jpg'
 export default {
   name: 'HomeView',
   components: {
-    AppHeader,
     ButtonComponent,
     FeatureCard
   },
@@ -49,7 +47,6 @@ export default {
 
 <template>
   <div class="home-page">
-    <AppHeader />
     <main class="main-content">
       <div class="container">
         <section class="hero">

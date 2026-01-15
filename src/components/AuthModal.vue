@@ -1,19 +1,25 @@
 <template>
   <div class="modal-overlay" v-if="activeModal === 'login'">
     <div class="modal">
-      <button class="modal-close" @click="$emit('close')">×</button>
+      <button class="modal-close" @click="handleClose">×</button>
       <h2 class="modal-title">Login</h2>
 
-      <form class="modal-form" @submit.prevent="$emit('login', loginData)">
+      <form class="modal-form" @submit.prevent="handleLoginSubmit">
         <div class="form-group">
           <label for="login-username" class="form-label">Username</label>
           <input
             type="text"
             id="login-username"
             class="form-input"
+            :class="{ 'input-error': loginErrors.username }"
             v-model="loginData.username"
-            placeholder="emilys"
+            placeholder="Enter your username"
+            @input="validateLoginField('username')"
+            required
           />
+          <div v-if="loginErrors.username" class="error-message">
+            {{ loginErrors.username }}
+          </div>
         </div>
 
         <div class="form-group">
@@ -22,31 +28,65 @@
             type="password"
             id="login-password"
             class="form-input"
+            :class="{ 'input-error': loginErrors.password }"
             v-model="loginData.password"
-            placeholder="••••••••"
+            placeholder="Enter your password"
+            @input="validateLoginField('password')"
+            required
           />
+          <div v-if="loginErrors.password" class="error-message">
+            {{ loginErrors.password }}
+          </div>
         </div>
 
-        <button type="submit" class="btn btn-primary btn-block">Login to Account</button>
+        <button type="submit" class="btn btn-primary btn-block" :disabled="loginLoading">
+          <span v-if="!loginLoading">Login to Account</span>
+          <span v-else>Logging in...</span>
+        </button>
       </form>
 
       <div class="modal-divider">
         <span>Or</span>
       </div>
 
-      <button class="btn btn-outline btn-block" @click="activeModal = 'register'">
+      <button class="btn btn-outline btn-block" @click="switchToRegister">
         Create New Account
       </button>
     </div>
   </div>
 
+  <!-- Форма регистрации -->
   <div class="modal-overlay" v-else-if="activeModal === 'register'">
     <div class="modal">
-      <button class="modal-close" @click="$emit('close')">×</button>
+      <button class="modal-close" @click="handleClose">×</button>
       <h2 class="modal-title">Registration</h2>
 
-      <form class="modal-form" @submit.prevent="$emit('register', registerData)">
-        <div class="form-row"></div>
+      <form class="modal-form" @submit.prevent="handleRegisterSubmit">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="reg-firstName" class="form-label">First Name *</label>
+            <input
+              type="text"
+              id="reg-firstName"
+              class="form-input"
+              v-model="registerData.firstName"
+              placeholder="Emily"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="reg-lastName" class="form-label">Last Name *</label>
+            <input
+              type="text"
+              id="reg-lastName"
+              class="form-input"
+              v-model="registerData.lastName"
+              placeholder="Johnson"
+              required
+            />
+          </div>
+        </div>
 
         <div class="form-group">
           <label for="reg-username" class="form-label">Username *</label>
@@ -61,7 +101,7 @@
         </div>
 
         <div class="form-group">
-          <label for="reg-email" class="form-label">Login</label>
+          <label for="reg-email" class="form-label">Email</label>
           <input
             type="email"
             id="reg-email"
@@ -83,14 +123,17 @@
           />
         </div>
 
-        <button type="submit" class="btn btn-primary btn-block">Create Account</button>
+        <button type="submit" class="btn btn-primary btn-block" :disabled="registerLoading">
+          <span v-if="!registerLoading">Create Account</span>
+          <span v-else>Processing...</span>
+        </button>
       </form>
 
       <div class="modal-divider">
         <span>Already have an account?</span>
       </div>
 
-      <button class="btn btn-outline btn-block" @click="activeModal = 'login'">
+      <button class="btn btn-outline btn-block" @click="switchToLogin">
         Login to Existing Account
       </button>
     </div>
@@ -109,6 +152,8 @@ export default {
   data() {
     return {
       activeModal: this.initialModal,
+      loginLoading: false,
+      registerLoading: false,
       loginData: {
         username: '',
         password: ''
@@ -116,15 +161,144 @@ export default {
       registerData: {
         username: '',
         password: '',
-        email: ''
+        email: '',
+        firstName: '',
+        lastName: ''
+      },
+      loginErrors: {
+        username: '',
+        password: ''
       }
     }
   },
-  emits: ['close', 'login', 'register']
+  methods: {
+    validateLoginField(field) {
+      const value = this.loginData[field]
+
+      if (field === 'username') {
+        if (!value.trim()) {
+          this.loginErrors.username = 'Username is required'
+        } else {
+          this.loginErrors.username = ''
+        }
+      }
+
+      if (field === 'password') {
+        if (!value) {
+          this.loginErrors.password = 'Password is required'
+        } else if (value.length < 3) {
+          this.loginErrors.password = 'Password must be at least 3 characters'
+        } else {
+          this.loginErrors.password = ''
+        }
+      }
+    },
+
+    validateLoginForm() {
+      let isValid = true
+
+      // Валидация имени пользователя
+      if (!this.loginData.username.trim()) {
+        this.loginErrors.username = 'Username is required'
+        isValid = false
+      } else {
+        this.loginErrors.username = ''
+      }
+
+      if (!this.loginData.password) {
+        this.loginErrors.password = 'Password is required'
+        isValid = false
+      } else if (this.loginData.password.length < 3) {
+        this.loginErrors.password = 'Password must be at least 3 characters'
+        isValid = false
+      } else {
+        this.loginErrors.password = ''
+      }
+
+      return isValid
+    },
+
+    handleLoginSubmit() {
+      if (!this.validateLoginForm()) {
+        return
+      }
+
+      this.loginLoading = true
+
+      this.$emit('login', {
+        username: this.loginData.username,
+        password: this.loginData.password
+      })
+
+      setTimeout(() => {
+        this.loginLoading = false
+      }, 3000)
+    },
+
+    switchToRegister() {
+      this.activeModal = 'register'
+      // Сбрасываем ошибки входа при переключении
+      this.loginErrors = { username: '', password: '' }
+    },
+
+    switchToLogin() {
+      this.activeModal = 'login'
+    },
+
+    handleClose() {
+      if (this.activeModal === 'login') {
+        const hasErrors = this.loginErrors.username || this.loginErrors.password
+
+        if (hasErrors) {
+          return
+        }
+
+        const hasEmptyFields = !this.loginData.username.trim() || !this.loginData.passwor
+
+        if (hasEmptyFields) {
+          this.validateLoginForm()
+          return
+        }
+      }
+
+      this.$emit('close')
+    }
+  },
+  emits: ['close', 'login']
 }
 </script>
 
 <style scoped>
+.input-error {
+  border-color: #ff4444 !important;
+  background-color: #fff8f8 !important;
+}
+
+.input-error:focus {
+  box-shadow: 0 0 0 3px rgba(255, 68, 68, 0.1) !important;
+}
+
+.error-message {
+  color: #ff4444;
+  font-size: 12px;
+  margin-top: 4px;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.registration-notice {
+  background: #fff3cd;
+  border: 1px solid #ffeaa7;
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  font-size: 13px;
+  color: #856404;
+}
+
+.registration-notice p {
+  margin: 4px 0;
+}
+
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -254,6 +428,11 @@ export default {
   text-align: center;
 }
 
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .btn-block {
   width: 100%;
   display: block;
@@ -265,7 +444,7 @@ export default {
   border-color: rgba(104, 208, 23, 1);
 }
 
-.btn-primary:hover {
+.btn-primary:hover:not(:disabled) {
   background-color: rgba(90, 188, 21, 1);
   border-color: rgba(90, 188, 21, 1);
   transform: translateY(-1px);
@@ -321,49 +500,6 @@ export default {
   .btn {
     padding: 12px 20px;
     font-size: 15px;
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  .modal {
-    background: #1a1a1a;
-    color: #fff;
-  }
-
-  .modal-title {
-    color: #fff;
-  }
-
-  .form-label {
-    color: #ccc;
-  }
-
-  .form-input {
-    background: #2a2a2a;
-    border-color: #444;
-    color: #fff;
-  }
-
-  .form-input:focus {
-    border-color: rgba(104, 208, 23, 1);
-  }
-
-  .modal-close {
-    color: #ccc;
-  }
-
-  .modal-close:hover {
-    background: #333;
-    color: #fff;
-  }
-
-  .modal-divider {
-    color: #666;
-  }
-
-  .modal-divider::before,
-  .modal-divider::after {
-    background: #444;
   }
 }
 </style>

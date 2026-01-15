@@ -1,69 +1,126 @@
 <template>
   <div id="app">
+    <AppHeader @open-login="openAuthModal" />
+
     <router-view />
 
-    <!-- <AuthModal
+    <AuthModal
       v-if="showAuthModal"
       :initial-modal="authModalType"
-      @close="closeAuthModal"
+      @close="handleCloseModal"
       @login="handleLogin"
-      @register="handleRegister"
-    /> -->
+    />
   </div>
 </template>
 
 <script>
-// import AuthModal from './components/AuthModal.vue'
+import AppHeader from './components/AppHeader.vue'
+import AuthModal from './components/AuthModal.vue'
+import { mapState, mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'App',
   components: {
-    // AuthModal
+    AppHeader,
+    AuthModal
   },
   data() {
     return {
       showAuthModal: false,
       authModalType: 'login',
-      hasSeenModal: false
+      hasToken: false
+    }
+  },
+  computed: {
+    ...mapState(['isAuthenticated', 'token']),
+    ...mapGetters(['currentUser'])
+  },
+  watch: {
+    isAuthenticated(newVal) {
+      if (newVal) {
+        this.showAuthModal = false
+      } else if (!this.hasToken && !newVal) {
+        setTimeout(() => {
+          if (!this.isAuthenticated) {
+            this.showAuthModal = true
+          }
+        }, 1000)
+      }
     }
   },
   mounted() {
-    setTimeout(() => {
-      this.showAuthModalOnLoad()
-    }, 1000)
+    this.hasToken = !!localStorage.getItem('token')
+
+    if (this.hasToken) {
+      this.fetchCurrentUser()
+        .then(() => {
+          if (!this.isAuthenticated) {
+            setTimeout(() => {
+              this.showAuthModal = true
+            }, 500)
+          }
+        })
+        .catch(() => {
+          this.showAuthModal = true
+        })
+    } else {
+      setTimeout(() => {
+        this.showAuthModal = true
+      }, 1000)
+    }
   },
   methods: {
-    showAuthModalOnLoad() {
-      // Проверяем, не показывали ли уже модалку
-      if (this.hasSeenModal) return
+    ...mapActions(['login', 'logout', 'fetchCurrentUser']),
 
-      // Можно добавить проверку, авторизован ли пользователь
-      const isLoggedIn = localStorage.getItem('isLoggedIn') || false
+    async handleLogin(loginData) {
+      const result = await this.login(loginData)
 
-      if (!isLoggedIn) {
-        this.showAuthModal = true
-        this.authModalType = 'login'
-        this.hasSeenModal = true
-
-        // Сохраняем в sessionStorage, чтобы не показывать повторно
-        sessionStorage.setItem('authModalShown', 'true')
+      if (result.success) {
+        this.showAuthModal = false
+        this.hasToken = true
+      } else {
+        alert(result.error || 'Login failed. Please try again.')
       }
     },
-    closeAuthModal() {
+
+    openAuthModal() {
+      this.authModalType = 'login'
       this.showAuthModal = true
+    },
+
+    handleCloseModal() {
+      this.showAuthModal = false
     }
   }
 }
 </script>
 
 <style>
-.fade-enter-active,
-.fade-leave-active {
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background-color: #f8f9fa;
+  color: #222;
+}
+
+#app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-enter-active,
+.modal-leave-active {
   transition: opacity 0.3s ease;
 }
 
-.fade-enter-from,
-.fade-leave-to {
+.modal-enter-from,
+.modal-leave-to {
   opacity: 0;
 }
 </style>

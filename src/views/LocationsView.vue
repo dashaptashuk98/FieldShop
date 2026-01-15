@@ -1,7 +1,6 @@
 <!-- src/views/LocationsView.vue -->
 <template>
   <div class="lovations-page">
-    <AppHeader />
     <main class="main-content">
       <div class="container">
         <section class="locations">
@@ -9,6 +8,7 @@
           <div class="form__search">
             <img class="header__center-img" src="@/assets/images/search.svg" alt="Поиск" />
             <input
+              v-model="searchText"
               type="text"
               class="header__center-search"
               placeholder="Search by city, country, village places"
@@ -36,10 +36,13 @@
                 >
                   Filter
                 </ButtonComponent>
+                <div v-if="filteredFields.length === 0 && searchText" class="no-results">
+                  No results for "{{ searchText }}"
+                </div>
               </div>
               <div class="info__list-container">
                 <ul class="info__list">
-                  <FieldCard v-for="field in fields" :key="field.id" :field="field" />
+                  <FieldCard v-for="field in filteredFields" :key="field.id" :field="field" />
                 </ul>
               </div>
             </div>
@@ -53,7 +56,6 @@
 </template>
 
 <script>
-import AppHeader from '@/components/AppHeader.vue'
 import ButtonComponent from '@/components/ButtonComponent.vue'
 import SimpleMap from '@/components/MapComponent.vue'
 import FieldCard from '@/components/FieldCard.vue'
@@ -62,7 +64,6 @@ import FilterIcon from '@/assets/images/filter-edit.svg'
 export default {
   name: 'LocationsView',
   components: {
-    AppHeader,
     ButtonComponent,
     SimpleMap,
     FieldCard
@@ -70,12 +71,23 @@ export default {
   data() {
     return {
       FilterIcon: FilterIcon,
-      fields: []
+      fields: [],
+      searchText: ''
+    }
+  },
+  computed: {
+    filteredFields() {
+      if (!this.searchText) {
+        return this.fields
+      }
+
+      const query = this.searchText.toLowerCase()
+      return this.fields.filter((field) => field.title.toLowerCase().startsWith(query)) // includes()
     }
   },
   async created() {
     try {
-      const response = await fetch('https://dummyjson.com/products?limit=5')
+      const response = await fetch('https://dummyjson.com/products')
       const data = await response.json()
       this.fields = data.products
     } catch (error) {
@@ -92,6 +104,14 @@ export default {
   width: 100%;
   padding: 0 100px;
   box-sizing: border-box;
+}
+
+.no-results {
+  text-align: center;
+  padding: 20px;
+  color: #666;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
 }
 
 .locations {
@@ -140,7 +160,6 @@ export default {
   font-size: 18px;
   color: #353640;
   box-sizing: border-box;
-  transition: all 0.3s ease;
 }
 
 .header__center-search:focus {
@@ -160,9 +179,9 @@ export default {
   right: 10px;
   top: 50%;
   transform: translateY(-50%);
-  height: 51px !important;
-  width: 140px !important;
-  border-radius: 12px !important;
+  height: 51px;
+  width: 140px;
+  border-radius: 12px;
   margin: 0 !important;
 }
 

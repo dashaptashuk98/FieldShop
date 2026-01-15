@@ -96,7 +96,6 @@ export default {
 
 .btn--primary:hover {
   background-color: #5abc15;
-  transform: translateY(-2px);
 }
 
 .btn--outline {
