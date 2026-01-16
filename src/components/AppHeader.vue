@@ -2,66 +2,72 @@
   <header class="header">
     <div class="container">
       <nav class="header__nav">
-        <div class="nav-menu">
-          <ul class="nav-menu__list">
-            <li class="nav-menu__item">
-              <router-link to="/" exact-active-class="active" class="nav-menu__link"
+        <div class="nav">
+          <ul class="nav__list">
+            <li class="nav__item">
+              <router-link to="/" exact-active-class="nav__link--active" class="nav__link"
                 >Home</router-link
               >
             </li>
-            <li class="nav-menu__item">
-              <router-link to="/locations" active-class="active" class="nav-menu__link"
+            <li class="nav__item">
+              <router-link to="/locations" active-class="nav__link--active" class="nav__link"
                 >Locations</router-link
               >
             </li>
-            <li class="nav-menu__item">
-              <router-link to="/" class="nav-menu__link">Contacts</router-link>
+            <li class="nav__item">
+              <router-link to="/" class="nav__link">Contacts</router-link>
             </li>
-            <li class="nav-menu__item">
-              <router-link to="/shop" active-class="active" class="nav-menu__link"
+            <li class="nav__item">
+              <router-link to="/shop" active-class="nav__link--active" class="nav__link"
                 >Shop</router-link
               >
             </li>
-            <li class="nav-menu__item">
-              <router-link to="/" class="nav-menu__link">Wallet</router-link>
+            <li class="nav__item">
+              <router-link to="/" class="nav__link">Wallet</router-link>
             </li>
           </ul>
         </div>
 
-        <div class="user-actions">
+        <div class="header__user-actions">
           <div class="cart">
             <img class="cart__icon" src="@/assets/images/Icon.svg" alt="Shopping cart" />
             <span class="cart__count">{{ cartCount }}</span>
           </div>
 
           <div class="user-profile" v-if="isAuthenticated && currentUser">
-            <div class="user-info-compact">
-              <div class="user-avatar">
+            <div class="user-profile__info">
+              <div class="user-profile__avatar">
                 <img
                   v-if="currentUser.image"
                   :src="currentUser.image"
                   :alt="currentUser.firstName"
-                  class="user-avatar__image"
+                  class="user-profile__avatar-image"
                 />
                 <img
                   v-else
                   src="@/assets/images/user.svg"
                   :alt="currentUser.firstName"
-                  class="user-avatar__image"
+                  class="user-profile__avatar-image"
                 />
               </div>
-              <div class="user-details">
-                <span class="user-name">{{ currentUser.firstName || currentUser.username }}</span>
+              <div class="user-profile__details">
+                <span class="user-profile__name">{{
+                  currentUser.firstName || currentUser.username
+                }}</span>
               </div>
             </div>
-            <button class="logout-btn-header" @click="handleLogout" title="Logout">
-              <img src="@/assets/images/login-svgrepo-com.svg" alt="Logout" class="logout-icon" />
+            <button class="user-profile__logout" @click="handleLogout" title="Logout">
+              <img
+                src="@/assets/images/login-svgrepo-com.svg"
+                alt="Logout"
+                class="user-profile__logout-icon"
+              />
             </button>
           </div>
 
-          <div class="login-icon" v-else @click="openLoginModal">
-            <img src="@/assets/images/user.svg" alt="Login" class="login-icon__image" />
-            <span class="login-text">Login</span>
+          <div class="auth" v-else @click="openLoginModal">
+            <img src="@/assets/images/user.svg" alt="Login" class="auth__icon" />
+            <span class="auth__text">Login</span>
           </div>
         </div>
       </nav>
@@ -91,7 +97,6 @@ export default {
     handleLogout() {
       if (confirm('Are you sure you want to logout?')) {
         this.logout()
-
         this.$router.push('/')
       }
     },
@@ -123,7 +128,7 @@ export default {
   gap: 40px;
 }
 
-.nav-menu__list {
+.nav__list {
   display: flex;
   list-style: none;
   margin: 0;
@@ -131,7 +136,7 @@ export default {
   gap: 40px;
 }
 
-.nav-menu__link {
+.nav__link {
   position: relative;
   text-decoration: none;
   font:
@@ -140,14 +145,13 @@ export default {
   color: #222;
   opacity: 0.5;
   padding-bottom: 10px;
-  transition: opacity 0.3s ease;
 }
 
-.nav-menu__link:hover {
+.nav__link:hover {
   opacity: 1;
 }
 
-.nav-menu__link::after {
+.nav__link::after {
   content: '';
   position: absolute;
   bottom: 0;
@@ -157,17 +161,18 @@ export default {
   background: #68d017;
   border-radius: 4px 4px 0 0;
   transform: translateX(-50%);
-  transition: width 0.3s ease;
 }
-.nav-menu__link.active {
+
+.nav__link--active {
   opacity: 1;
 }
-.nav-menu__link.active::after {
+
+.nav__link--active::after {
   width: 100%;
   opacity: 1;
 }
 
-.user-actions {
+.header__user-actions {
   display: flex;
   align-items: center;
   gap: 40px;
@@ -200,13 +205,13 @@ export default {
   gap: 15px;
 }
 
-.user-info-compact {
+.user-profile__info {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
-.user-avatar {
+.user-profile__avatar {
   width: 36px;
   height: 36px;
   border-radius: 50%;
@@ -217,25 +222,18 @@ export default {
   justify-content: center;
 }
 
-.user-avatar__image {
+.user-profile__avatar-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.user-avatar__placeholder {
-  color: white;
-  font-weight: bold;
-  font-size: 14px;
-  font-family: 'DM Sans', sans-serif;
-}
-
-.user-details {
+.user-profile__details {
   display: flex;
   flex-direction: column;
 }
 
-.user-name {
+.user-profile__name {
   font-family: 'DM Sans', sans-serif;
   font-size: 14px;
   font-weight: 500;
@@ -243,7 +241,7 @@ export default {
   white-space: nowrap;
 }
 
-.logout-btn-header {
+.user-profile__logout {
   background: none;
   border: none;
   padding: 5px;
@@ -252,19 +250,14 @@ export default {
   align-items: center;
   justify-content: center;
   border-radius: 5px;
-  transition: background-color 0.2s;
 }
 
-.logout-btn-header:hover {
-  background: rgba(255, 68, 68, 0.1);
-}
-
-.logout-icon {
+.user-profile__logout-icon {
   width: 18px;
   height: 18px;
 }
 
-.login-icon {
+.auth {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -273,60 +266,56 @@ export default {
   border-radius: 20px;
   background: rgba(104, 208, 23, 0.1);
   border: 1px solid rgba(104, 208, 23, 0.2);
-  transition: all 0.2s ease;
 }
 
-.login-icon:hover {
-  background: rgba(104, 208, 23, 0.2);
-}
-
-.login-icon__image {
+.auth__icon {
   width: 20px;
   height: 20px;
 }
 
-.login-text {
+.auth__text {
   font-family: 'DM Sans', sans-serif;
   font-size: 14px;
   color: #222;
   font-weight: 500;
 }
 
-/* Адаптивность */
-@media (max-width: 1024px) {
+@media (max-width: 1023px) {
   .header__nav {
     flex-wrap: wrap;
-    justify-content: center;
     gap: 20px;
   }
 
-  .nav-menu__list {
+  .nav__list {
     gap: 20px;
   }
 
-  .nav-menu__link {
+  .nav__link {
     font-size: 18px;
   }
 
-  .user-actions {
+  .header__user-actions {
     gap: 20px;
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .header {
     padding: 20px 0;
   }
 
   .header__nav {
-    flex-direction: column;
     gap: 15px;
+    justify-content: center;
   }
 
-  .nav-menu__list {
-    flex-direction: column;
+  .nav__list {
     align-items: center;
-    gap: 15px;
+    gap: 10px;
+  }
+
+  .nav__link {
+    font-size: 16px;
   }
 
   .user-profile {
@@ -334,35 +323,16 @@ export default {
     gap: 10px;
   }
 
-  .user-name {
+  .user-profile__name {
     font-size: 12px;
   }
 
-  .login-icon {
+  .auth {
     padding: 6px 12px;
   }
 
-  .login-text {
+  .auth__text {
     font-size: 12px;
-  }
-}
-
-/* Темная тема */
-@media (prefers-color-scheme: dark) {
-  .nav-menu__link {
-    color: #fff;
-  }
-
-  .user-name {
-    color: #fff;
-  }
-
-  .login-text {
-    color: #fff;
-  }
-
-  .user-avatar__placeholder {
-    color: #fff;
   }
 }
 </style>

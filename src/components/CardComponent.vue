@@ -1,35 +1,28 @@
 <template>
-  <li class="info__item">
-    <div class="info__wrapp">
-      <img :src="field.thumbnail" :alt="field.title" class="info__img" />
-      <div class="info__footer">
-        <div class="info__descr">
-          <span class="info__name">{{ field.title }}</span>
-          <span class="info__size">{{ field.total }}</span>
-          <span class="info__price">{{ field.prise }}</span>
-          <span class="info__des">Germany</span>
-        </div>
-        \
-        <div class="button__wrapper">
-          <ButtonComponent variant="outlineGreen" class="btnShop">Invest</ButtonComponent>
-          <ButtonComponent variant="Green" class="btnShop">Reserve</ButtonComponent>
-        </div>
-      </div>
+  <div class="card">
+    <div class="card__image-wrapper">
+      <img :src="image" :alt="altText" class="card__image" />
     </div>
-  </li>
+    <div class="card__content">
+      <p class="card__text">{{ text }}</p>
+    </div>
+  </div>
 </template>
 
 <script>
-import ButtonComponent from '@/components/ButtonComponent.vue'
-
 export default {
-  name: 'FieldCard',
-  components: {
-    ButtonComponent
-  },
+  name: 'CardComponent',
   props: {
-    field: {
-      type: Object,
+    image: {
+      type: String,
+      required: true
+    },
+    altText: {
+      type: String,
+      default: 'Card image'
+    },
+    text: {
+      type: String,
       required: true
     }
   }
@@ -37,57 +30,69 @@ export default {
 </script>
 
 <style scoped>
-.info__item {
+.card {
+  position: relative;
   width: 100%;
-  margin: 0;
-  flex: 0 0 auto;
+  height: 370px;
+  border-radius: 20px;
+  overflow: hidden;
 }
 
-.info__wrapp {
-  display: flex;
-  flex-direction: column;
+.card__image-wrapper {
   width: 100%;
+  height: 100%;
 }
 
-.info__img {
+.card__image {
   width: 100%;
-  height: 400px;
+  height: 100%;
   object-fit: cover;
-  border-radius: 12px;
-  margin: 20px 0;
 }
 
-.info__footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: auto;
+.card__content {
+  position: absolute;
+  bottom: 15px;
+  left: 20px;
+  right: 20px;
 }
 
-.info__descr {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-
-.info__name {
-  font-family: 'DM Serif Text', serif;
-  font-size: 24px;
-  color: #353640;
+.card__text {
+  padding: 12px 15px;
+  background: rgba(255, 255, 255, 0.95);
+  border: 2px solid #dcdcdc;
+  border-radius: 10px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 18px;
   font-weight: 400;
+  line-height: 24px;
+  color: #353640;
+  text-align: center;
+  backdrop-filter: blur(5px);
+  margin: 0;
 }
 
-.info__des {
-  font-family: 'DM Sans';
-  font-style: normal;
-  font-weight: 500;
-  font-size: 20px;
-  line-height: 26px;
-  color: #9c9c9c;
+@media (max-width: 1023px) {
+  .card {
+    height: 300px;
+  }
+  .card__text {
+    font-size: 16px;
+    line-height: 22px;
+  }
 }
 
-.btnShop {
-  width: 133px;
-  height: 51px;
+@media (max-width: 767px) {
+  .card {
+    height: 250px;
+  }
+  .card__content {
+    left: 15px;
+    right: 15px;
+  }
+  .card__text {
+    font-size: 14px;
+    line-height: 20px;
+    padding: 10px 12px;
+  }
 }
 </style>

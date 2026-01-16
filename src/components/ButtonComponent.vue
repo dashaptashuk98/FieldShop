@@ -133,13 +133,4 @@ export default {
     padding: 12px 24px;
   }
 }
-
-@media (max-width: 480px) {
-  .btn {
-    width: 120px;
-    height: 45px;
-    padding: 10px 20px;
-    font-size: 16px;
-  }
-}
 </style>

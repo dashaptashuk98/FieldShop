@@ -1,53 +1,55 @@
-<!-- src/views/LocationsView.vue -->
 <template>
-  <div class="lovations-page">
-    <main class="main-content">
-      <div class="container">
-        <section class="locations">
+  <div class="locations">
+    <main class="locations__main">
+      <div class="locations__container">
+        <section class="locations__header">
           <h1 class="locations__title">Locations</h1>
-          <div class="form__search">
-            <img class="header__center-img" src="@/assets/images/search.svg" alt="Поиск" />
+          <div class="locations__search">
+            <img class="locations__search-icon" src="@/assets/images/search.svg" alt="Search" />
             <input
               v-model="searchText"
               type="text"
-              class="header__center-search"
-              placeholder="Search by city, country, village places"
+              class="locations__search-input"
+              placeholder="Search by title"
             />
-            <ButtonComponent class="search-clear" variant="primary"> Search </ButtonComponent>
+            <ButtonComponent class="locations__search-btn" variant="primary">
+              Search
+            </ButtonComponent>
           </div>
         </section>
-        <section class="info">
-          <div class="info__inner">
-            <div class="info__spec">
-              <div class="info__header">
-                <div class="info__filter">
-                  <span class="info__title">Sort by</span>
-                  <select class="info__select" id="info__select">
-                    <option value="value1">All</option>
-                    <option value="value2">Price</option>
-                    <option value="value3">Size</option>
+        <section class="locations__content">
+          <div class="locations__grid">
+            <div class="locations__list-section">
+              <div class="locations__controls">
+                <div class="locations__filter">
+                  <span class="locations__filter-title">Sort by</span>
+                  <select class="locations__select">
+                    <option value="all">All</option>
+                    <option value="price">Price</option>
+                    <option value="size">Size</option>
                   </select>
                 </div>
                 <ButtonComponent
                   :icon="FilterIcon"
                   iconAlt="Filter"
                   variant="outline"
-                  class="btnFilter"
+                  class="locations__btn-filter"
                 >
                   Filter
                 </ButtonComponent>
-                <div v-if="filteredFields.length === 0 && searchText" class="no-results">
+                <div v-if="filteredFields.length === 0 && searchText" class="locations__no-results">
                   No results for "{{ searchText }}"
                 </div>
               </div>
-              <div class="info__list-container">
-                <ul class="info__list">
-                  <FieldCard v-for="field in filteredFields" :key="field.id" :field="field" />
+              <div class="locations__list-container">
+                <ul class="locations__list">
+                  <LocationCard v-for="field in filteredFields" :key="field.id" :field="field" />
                 </ul>
               </div>
             </div>
-
-            <SimpleMap />
+            <div class="locations__map">
+              <SimpleMap />
+            </div>
           </div>
         </section>
       </div>
@@ -58,7 +60,7 @@
 <script>
 import ButtonComponent from '@/components/ButtonComponent.vue'
 import SimpleMap from '@/components/MapComponent.vue'
-import FieldCard from '@/components/FieldCard.vue'
+import LocationCard from '@/components/LocationCard.vue'
 import FilterIcon from '@/assets/images/filter-edit.svg'
 
 export default {
@@ -66,7 +68,7 @@ export default {
   components: {
     ButtonComponent,
     SimpleMap,
-    FieldCard
+    LocationCard
   },
   data() {
     return {
@@ -80,9 +82,8 @@ export default {
       if (!this.searchText) {
         return this.fields
       }
-
       const query = this.searchText.toLowerCase()
-      return this.fields.filter((field) => field.title.toLowerCase().startsWith(query)) // includes()
+      return this.fields.filter((field) => field.title.toLowerCase().startsWith(query))
     }
   },
   async created() {
@@ -98,7 +99,7 @@ export default {
 </script>
 
 <style scoped>
-.container {
+.locations__container {
   max-width: 1920px;
   margin: 0 auto;
   width: 100%;
@@ -106,20 +107,24 @@ export default {
   box-sizing: border-box;
 }
 
-.no-results {
-  text-align: center;
-  padding: 20px;
-  color: #666;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 16px;
+.locations {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
-.locations {
+.locations__main {
+  flex: 1;
+  padding: 60px 0;
+}
+
+.locations__header {
   display: flex;
   flex-direction: column;
   gap: 50px;
   align-items: center;
   justify-content: center;
+  margin-bottom: 60px;
 }
 
 .locations__title {
@@ -129,16 +134,16 @@ export default {
     400 64px/88px 'DM Serif Text',
     serif;
   color: #353640;
+  text-align: center;
 }
 
-.form__search {
+.locations__search {
   position: relative;
   width: 100%;
   max-width: 900px;
-  margin-bottom: 60px;
 }
 
-.header__center-img {
+.locations__search-icon {
   position: absolute;
   left: 25px;
   top: 50%;
@@ -148,7 +153,7 @@ export default {
   z-index: 2;
 }
 
-.header__center-search {
+.locations__search-input {
   width: 100%;
   max-width: 900px;
   height: 71px;
@@ -162,19 +167,7 @@ export default {
   box-sizing: border-box;
 }
 
-.header__center-search:focus {
-  outline: none;
-  border-color: #68d017;
-  background-color: #ffffff;
-  box-shadow: 0 0 0 3px rgba(104, 208, 23, 0.1);
-}
-
-.header__center-search::placeholder {
-  color: #999;
-  font-size: 18px;
-}
-
-.search-clear {
+.locations__search-btn {
   position: absolute;
   right: 10px;
   top: 50%;
@@ -182,24 +175,40 @@ export default {
   height: 51px;
   width: 140px;
   border-radius: 12px;
-  margin: 0 !important;
 }
 
-.info__inner {
+.locations__grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 70px;
-  justify-content: space-between;
+  height: calc(100vh - 300px);
+  min-height: 600px;
 }
 
-.info__spec {
+.locations__list-section {
   display: flex;
   flex-direction: column;
   width: 100%;
-  flex: 1;
+  height: 100%;
 }
 
-.info__list-container {
+.locations__controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  flex-shrink: 0;
+}
+
+.locations__no-results {
+  text-align: center;
+  padding: 20px;
+  color: #666;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+}
+
+.locations__list-container {
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
@@ -207,7 +216,7 @@ export default {
   max-height: calc(400px + 20px + 20px + 51px + 20px);
 }
 
-.info__list {
+.locations__list {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -216,32 +225,25 @@ export default {
   gap: 21px;
 }
 
-.info__header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 30px;
-}
-
-.btnFilter {
+.locations__btn-filter {
   width: 105px;
   height: 48px;
 }
 
-.info__filter {
+.locations__filter {
   display: flex;
   align-items: center;
   gap: 15px;
 }
 
-.info__title {
+.locations__filter-title {
   font-family: 'DM Sans', sans-serif;
   font-size: 18px;
   color: #353640;
   font-weight: 500;
 }
 
-.info__select {
+.locations__select {
   border: none;
   background: transparent;
   font-family: 'DM Sans', sans-serif;
@@ -251,103 +253,84 @@ export default {
   cursor: pointer;
 }
 
-.info__select:focus {
-  outline: none;
-  border-color: #68d017;
-}
-
-.info__list-container::-webkit-scrollbar {
+.locations__list-container::-webkit-scrollbar {
   width: 8px;
 }
 
-.info__list-container::-webkit-scrollbar-track {
+.locations__list-container::-webkit-scrollbar-track {
   background: #f1f1f1;
   border-radius: 4px;
 }
 
-.info__list-container::-webkit-scrollbar-thumb {
+.locations__list-container::-webkit-scrollbar-thumb {
   background: #68d017;
   border-radius: 4px;
 }
 
-.info__list-container::-webkit-scrollbar-thumb:hover {
+.locations__list-container::-webkit-scrollbar-thumb:hover {
   background: #5abc15;
 }
 
-@media (max-width: 1200px) {
-  .container {
+@media (max-width: 1023px) {
+  .locations__container {
     padding: 0 50px;
+  }
+  .locations__title {
+    font-size: 48px;
+    line-height: 64px;
+  }
+  .locations__grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    height: auto;
+    min-height: auto;
+  }
+  .locations__list-container {
+    max-height: 500px;
   }
 }
 
-@media (max-width: 768px) {
-  .container {
+@media (max-width: 767px) {
+  .locations__container {
     padding: 0 20px;
   }
-
-  .locations__title {
-    font-size: 36px;
-    line-height: 48px;
+  .locations__main {
+    padding: 40px 0;
   }
-
-  .header__center-search {
+  .locations__header {
+    gap: 30px;
+    margin-bottom: 40px;
+  }
+  .locations__title {
+    font-size: 32px;
+    line-height: 42px;
+  }
+  .locations__search-input {
     height: 60px;
     padding-left: 50px;
     padding-right: 130px;
     font-size: 16px;
   }
-
-  .header__center-img {
+  .locations__search-icon {
     left: 15px;
     width: 20px;
     height: 20px;
   }
-
-  .search-clear {
-    height: 46px !important;
-    width: 110px !important;
-    font-size: 16px !important;
+  .locations__search-btn {
+    height: 46px;
+    width: 110px;
     right: 7px;
   }
-
-  .info__header {
+  .locations__controls {
     flex-direction: column;
     gap: 15px;
     align-items: stretch;
   }
-
-  .info__filter {
+  .locations__filter {
     justify-content: space-between;
   }
-
-  .info__inner {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 480px) {
-  .locations__title {
-    font-size: 28px;
-    line-height: 38px;
-  }
-
-  .header__center-search {
-    height: 50px;
-    padding-left: 45px;
-    padding-right: 100px;
-    font-size: 14px;
-  }
-
-  .search-clear {
-    height: 40px;
-    width: 85px;
-    font-size: 14px;
-    right: 5px;
-    border-radius: 8px;
-  }
-
-  .header__center-search::placeholder {
-    font-size: 14px;
+  .locations__list-container {
+    max-height: 400px;
   }
 }
 </style>

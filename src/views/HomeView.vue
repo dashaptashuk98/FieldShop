@@ -1,20 +1,18 @@
 <script>
 import ButtonComponent from '@/components/ButtonComponent.vue'
-import FeatureCard from '@/components/FeatureCart.vue'
 import cabageImage from '@/assets/images/cabage.jpg'
 import tomatoImage from '@/assets/images/tomato.jpg'
 import growthImage from '@/assets/images/growth.jpg'
-import searchIcon from '@/assets/images/growth.jpg'
+import CardComponent from '@/components/CardComponent.vue'
 
 export default {
   name: 'HomeView',
   components: {
     ButtonComponent,
-    FeatureCard
+    CardComponent
   },
   data() {
     return {
-      searchIcon: searchIcon,
       features: [
         {
           id: 1,
@@ -46,9 +44,9 @@ export default {
 </script>
 
 <template>
-  <div class="home-page">
-    <main class="main-content">
-      <div class="container">
+  <div class="home">
+    <main class="home__main">
+      <div class="home__container">
         <section class="hero">
           <h1 class="hero__title">
             Rent your own field, invest in farming, and grow your own vegetables
@@ -58,7 +56,7 @@ export default {
         <section class="features">
           <ul class="features__list">
             <li v-for="feature in features" :key="feature.id" class="features__item">
-              <FeatureCard :image="feature.image" :alt-text="feature.alt" :text="feature.text" />
+              <CardComponent :image="feature.image" :alt-text="feature.alt" :text="feature.text" />
             </li>
           </ul>
         </section>
@@ -68,7 +66,7 @@ export default {
 </template>
 
 <style scoped>
-.container {
+.home__container {
   max-width: 1920px;
   margin: 0 auto;
   width: 100%;
@@ -76,12 +74,23 @@ export default {
   box-sizing: border-box;
 }
 
+.home {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.home__main {
+  flex: 1;
+  padding: 60px 0;
+}
+
 .hero {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 80px;
-  margin-bottom: 150px;
+  gap: 60px;
+  margin-bottom: 100px;
   text-align: center;
 }
 
@@ -95,90 +104,47 @@ export default {
 }
 
 .features__list {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
   list-style: none;
   margin: 0;
   padding: 0;
   gap: 35px;
-  justify-content: space-between;
 }
 
 .features__item {
-  flex: 1;
-  min-width: 350px;
-  max-width: 550px;
+  width: 100%;
 }
 
-@media (max-width: 1440px) {
-  .container {
+@media (max-width: 1023px) {
+  .home__container {
     padding: 0 50px;
   }
-
   .hero__title {
     font-size: 48px;
     line-height: 64px;
     max-width: 800px;
   }
-
-  .features__item {
-    min-width: 300px;
-  }
-}
-
-@media (max-width: 1024px) {
-  .container {
-    padding: 0 30px;
-  }
-
-  .hero__title {
-    font-size: 36px;
-    line-height: 48px;
-    max-width: 600px;
-  }
-
   .features__list {
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-
-  .features__item {
-    flex: 0 0 calc(50% - 18px);
-    min-width: 280px;
-    max-width: 450px;
+    grid-template-columns: auto;
+    gap: 30px;
   }
 }
 
-@media (max-width: 768px) {
-  .container {
+@media (max-width: 767px) {
+  .home__container {
     padding: 0 20px;
   }
-
+  .home__main {
+    padding: 40px 0;
+  }
   .hero {
     gap: 40px;
-    margin-bottom: 80px;
+    margin-bottom: 60px;
   }
-
   .hero__title {
-    font-size: 28px;
-    line-height: 38px;
-  }
-
-  .features__list {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .features__item {
-    flex: 0 0 100%;
-    min-width: 100%;
-    max-width: 550px;
-  }
-}
-
-@media (max-width: 480px) {
-  .hero__title {
-    font-size: 24px;
-    line-height: 32px;
+    font-size: 32px;
+    line-height: 42px;
   }
 }
 </style>
