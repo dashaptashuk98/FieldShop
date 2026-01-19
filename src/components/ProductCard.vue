@@ -1,6 +1,12 @@
 <template>
   <div class="product-card">
-    <img :src="product.thumbnail" :alt="product.title" class="product-image" />
+    <img
+      :src="product.thumbnail"
+      :alt="product.title"
+      class="product-image"
+      width="400"
+      height="420"
+    />
     <div class="product-info">
       <h3 class="product-title">{{ product.title }}</h3>
       <p class="product-country">UK</p>
@@ -39,10 +45,10 @@ export default {
 
 <style scoped>
 .product-card {
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--color-border-light);
   border-radius: 12px;
   overflow: hidden;
-  background: white;
+  background: var(--color-background-white);
   display: flex;
   flex-direction: column;
 }
@@ -51,7 +57,7 @@ export default {
   width: 100%;
   height: 420px;
   object-fit: cover;
-  background: #f5f5f5;
+  background: var(--color-background-light-gray);
 }
 
 .product-info {
@@ -73,7 +79,7 @@ export default {
   font-weight: 500;
   font-size: 24px;
   line-height: 31px;
-  color: rgba(34, 34, 34, 1);
+  color: var(--color-text-primary);
   margin: 0;
 }
 
@@ -83,7 +89,7 @@ export default {
   font-weight: 500;
   font-size: 20px;
   line-height: 26px;
-  color: #9c9c9c;
+  color: var(--color-text-gray);
   margin: 0;
 }
 
@@ -110,7 +116,7 @@ export default {
   font-weight: 400;
   font-size: 20px;
   line-height: 26px;
-  color: #9c9c9c;
+  color: var(--color-text-gray);
   margin: 0;
 }
 
@@ -120,7 +126,7 @@ export default {
   font-weight: 400;
   font-size: 20px;
   line-height: 26px;
-  color: #222222;
+  color: var(--color-text-primary);
   margin: 0;
 }
 

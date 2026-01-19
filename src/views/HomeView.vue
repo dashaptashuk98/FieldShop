@@ -1,8 +1,8 @@
 <script>
 import ButtonComponent from '@/components/ButtonComponent.vue'
-import cabageImage from '@/assets/images/cabage.jpg'
-import tomatoImage from '@/assets/images/tomato.jpg'
-import growthImage from '@/assets/images/growth.jpg'
+import cabageImage from '@/assets/images/cabage.webp'
+import tomatoImage from '@/assets/images/tomato.webp'
+import growthImage from '@/assets/images/growth.webp'
 import CardComponent from '@/components/CardComponent.vue'
 
 export default {
@@ -100,7 +100,7 @@ export default {
   font:
     400 64px/88px 'DM Serif Text',
     serif;
-  color: #353640;
+  color: var(--color-text-secondary);
 }
 
 .features__list {

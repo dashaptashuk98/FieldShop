@@ -16,72 +16,112 @@ export default {
     return {
       map: null,
       zoom: 6,
-      center: [51.1657, 10.4515]
+      center: [51.1657, 10.4515],
+      isMounted: false
     }
   },
+
   mounted() {
-    this.$nextTick(() => {
-      this.initMap()
-    })
+    this.isMounted = true
+    this.initMap()
   },
+
   methods: {
     async initMap() {
       try {
         const L = await import('leaflet')
         await import('leaflet/dist/leaflet.css')
-
-        this.map = L.map(this.$refs.mapContainer).setView(this.center, this.zoom)
+        if (!this.isMounted || !this.$refs.mapContainer) return
+        this.map = L.map(this.$refs.mapContainer, {
+          zoomControl: false,
+          fadeAnimation: false,
+          zoomAnimation: false,
+          markerZoomAnimation: false,
+          transform3DLimit: 1,
+          bounceAtZoomLimits: false
+        }).setView(this.center, this.zoom)
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
           attribution: '© OpenStreetMap',
           maxZoom: 19,
           minZoom: 3
         }).addTo(this.map)
-
-        L.control
-          .zoom({
-            position: 'topright'
-          })
-          .addTo(this.map)
-
-        L.marker(this.center).addTo(this.map).bindPopup('Germany Center').openPopup()
+        this.disableLeafletAnimations()
       } catch (error) {
         console.error('Error loading map:', error)
-        this.showFallback()
+      }
+    },
+
+    disableLeafletAnimations() {
+      if (!this.map) return
+      this.map._animateZoom = function () {}
+      this.map._animatePan = function () {}
+
+      // Переопределяем методы с анимацией
+      const originalSetView = this.map.setView
+      this.map.setView = function (center, zoom, options) {
+        return originalSetView.call(this, center, zoom, {
+          animate: false,
+          ...options
+        })
+      }
+
+      const originalFlyTo = this.map.flyTo
+      if (originalFlyTo) {
+        this.map.flyTo = function (target, options) {
+          return originalSetView.call(
+            this,
+            target.center || target,
+            target.zoom || this.getZoom(),
+            {
+              animate: false,
+              ...options
+            }
+          )
+        }
       }
     },
 
     zoomIn() {
       if (this.map) {
-        this.map.zoomIn()
+        this.map.setZoom(this.map.getZoom() + 1, { animate: false })
       }
     },
 
     zoomOut() {
       if (this.map) {
-        this.map.zoomOut()
+        this.map.setZoom(this.map.getZoom() - 1, { animate: false })
       }
     },
 
     locateGermany() {
       if (this.map) {
-        this.map.setView(this.center, 6)
+        this.map.setView(this.center, 6, { animate: false })
       }
-    },
-
-    showFallback() {
-      this.$refs.mapContainer.innerHTML = `
-        <div class="fallback-map">
-          <h3> Germany</h3>
-          <p>Interactive map</p>
-        </div>
-      `
     }
   },
+
   beforeUnmount() {
+    this.isMounted = false
+
     if (this.map) {
-      this.map.remove()
-      this.map = null
+      try {
+        if (this.map._stop) this.map._stop()
+        this.map.eachLayer((layer) => {
+          if (layer.remove) {
+            try {
+              layer.remove()
+            } catch (e) {}
+          }
+        })
+        this.map.remove()
+        this.map = null
+        if (this.$refs.mapContainer) {
+          this.$refs.mapContainer.innerHTML = ''
+        }
+      } catch (error) {
+        console.warn('Error during map cleanup:', error)
+      }
     }
   }
 }
@@ -98,16 +138,9 @@ export default {
   overflow: hidden;
 }
 
-/* Добавь адаптивность */
 @media (max-width: 768px) {
   .map-wrapper {
     height: 500px;
-  }
-}
-
-@media (max-width: 480px) {
-  .map-wrapper {
-    height: 400px;
   }
 }
 
@@ -152,50 +185,5 @@ export default {
 .map-btn:active {
   transform: translateY(0);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-}
-
-.fallback-map {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  text-align: center;
-}
-
-.fallback-map h3 {
-  margin: 0 0 10px 0;
-  font-size: 24px;
-}
-
-.fallback-map p {
-  margin: 0;
-  font-size: 14px;
-  opacity: 0.9;
-}
-
-:deep(.leaflet-control-zoom) {
-  border: none !important;
-  margin-top: 70px !important;
-  margin-right: 20px !important;
-}
-
-:deep(.leaflet-control-zoom a) {
-  background: white !important;
-  border: 1px solid #ddd !important;
-  color: #333 !important;
-  border-radius: 4px !important;
-  width: 34px !important;
-  height: 34px !important;
-  line-height: 30px !important;
-  margin-bottom: 4px !important;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
-}
-
-:deep(.leaflet-control-zoom a:hover) {
-  background: #f5f5f5 !important;
 }
 </style>

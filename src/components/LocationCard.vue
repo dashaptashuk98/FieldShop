@@ -1,7 +1,13 @@
 <template>
   <li class="location-card">
     <div class="location-card__wrapper">
-      <img :src="field.thumbnail" :alt="field.title" class="location-card__image" />
+      <img
+        :src="field.thumbnail"
+        :alt="field.title"
+        class="location-card__image"
+        width="926"
+        height="400"
+      />
       <div class="location-card__footer">
         <div class="location-card__info">
           <span class="location-card__title">{{ field.title }}</span>
@@ -67,7 +73,7 @@ export default {
 .location-card__title {
   font-family: 'DM Serif Text', serif;
   font-size: 24px;
-  color: #353640;
+  color: var(--color-text-secondary);
   font-weight: 400;
 }
 
@@ -77,7 +83,7 @@ export default {
   font-weight: 500;
   font-size: 20px;
   line-height: 26px;
-  color: #9c9c9c;
+  color: var(--color-text-gray);
 }
 
 .location-card__btn {

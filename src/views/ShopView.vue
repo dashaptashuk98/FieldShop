@@ -6,7 +6,7 @@
         <div class="shop__header">
           <div class="shop__filter">
             <span class="shop__filter-title">Sort by</span>
-            <select v-model="sortBy" class="shop__select">
+            <select id="sortShop" v-model="sortBy" class="shop__select">
               <option value="all">All</option>
               <option value="price">Price</option>
               <option value="size">Size</option>
@@ -146,9 +146,9 @@ export default {
   display: flex;
   align-items: center;
   display: inline-flex;
-  color: #222222;
+  color: var(--color-text-primary);
   padding-bottom: 10px;
-  border-bottom: 5px solid rgba(104, 208, 23, 1);
+  border-bottom: 5px solid var(--color-primary-green);
   margin-bottom: 54px;
 }
 
@@ -170,7 +170,7 @@ export default {
 .shop__filter-title {
   font-family: 'DM Sans', sans-serif;
   font-size: 18px;
-  color: #353640;
+  color: var(--color-text-secondary);
   font-weight: 500;
 }
 

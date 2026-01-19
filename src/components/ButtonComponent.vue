@@ -10,6 +10,8 @@
       :src="icon"
       :alt="iconAlt"
       :class="['btn__icon', `btn__icon--${iconPosition}`]"
+      width="20"
+      height="20"
     />
 
     <span class="btn__text">
@@ -90,12 +92,12 @@ export default {
 }
 
 .btn--primary {
-  background-color: #68d017;
-  color: #ffffff;
+  background-color: var(--color-primary);
+  color: var(--color-background-white);
 }
 
 .btn--primary:hover {
-  background-color: #5abc15;
+  background-color: var(--color-primary-dark);
 }
 
 .btn--outline {
@@ -107,17 +109,17 @@ export default {
 .btn--outlineGreen {
   background-color: transparent;
   color: #000000;
-  border: 2px solid rgba(104, 208, 23, 1);
+  border: 2px solid var(--color-primary-green);
 }
 
 .btn--Green {
   background-color: transparent;
-  color: rgba(104, 208, 23, 1);
+  color: var(--color-primary-green);
   border: none;
 }
 
 .btn--outline:hover {
-  background-color: #f5f5f5;
+  background-color: var(--color-background-light-gray);
   transform: translateY(-2px);
 }
 

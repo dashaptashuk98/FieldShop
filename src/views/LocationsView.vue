@@ -5,10 +5,18 @@
         <section class="locations__header">
           <h1 class="locations__title">Locations</h1>
           <div class="locations__search">
-            <img class="locations__search-icon" src="@/assets/images/search.svg" alt="Search" />
+            <img
+              class="locations__search-icon"
+              src="@/assets/images/search.svg"
+              alt="Search"
+              width="24"
+              height="24"
+            />
             <input
               v-model="searchText"
               type="text"
+              id="locations-search"
+              name="locations-search"
               class="locations__search-input"
               placeholder="Search by title"
             />
@@ -23,7 +31,7 @@
               <div class="locations__controls">
                 <div class="locations__filter">
                   <span class="locations__filter-title">Sort by</span>
-                  <select class="locations__select">
+                  <select id="sort" class="locations__select">
                     <option value="all">All</option>
                     <option value="price">Price</option>
                     <option value="size">Size</option>
@@ -83,7 +91,7 @@ export default {
         return this.fields
       }
       const query = this.searchText.toLowerCase()
-      return this.fields.filter((field) => field.title.toLowerCase().startsWith(query))
+      return this.fields.filter((field) => field.title.toLowerCase().includes(query))
     }
   },
   async created() {
@@ -93,6 +101,7 @@ export default {
       this.fields = data.products
     } catch (error) {
       console.error('Error fetching data:', error)
+      this.fields = []
     }
   }
 }
@@ -133,7 +142,7 @@ export default {
   font:
     400 64px/88px 'DM Serif Text',
     serif;
-  color: #353640;
+  color: var(--color-text-secondary);
   text-align: center;
 }
 
@@ -159,11 +168,11 @@ export default {
   height: 71px;
   padding: 10px 160px 10px 65px;
   border-radius: 18px;
-  background-color: rgba(234, 234, 234, 1);
+  background-color: var(--color-background-gray);
   border: 2px solid transparent;
   font-family: 'DM Sans', sans-serif;
   font-size: 18px;
-  color: #353640;
+  color: var(--color-text-secondary);
   box-sizing: border-box;
 }
 
@@ -239,7 +248,7 @@ export default {
 .locations__filter-title {
   font-family: 'DM Sans', sans-serif;
   font-size: 18px;
-  color: #353640;
+  color: var(--color-text-secondary);
   font-weight: 500;
 }
 
@@ -258,17 +267,17 @@ export default {
 }
 
 .locations__list-container::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: var(--color-background-light-gray);
   border-radius: 4px;
 }
 
 .locations__list-container::-webkit-scrollbar-thumb {
-  background: #68d017;
+  background: var(--color-primary);
   border-radius: 4px;
 }
 
 .locations__list-container::-webkit-scrollbar-thumb:hover {
-  background: #5abc15;
+  background: var(--color-primary-dark);
 }
 
 @media (max-width: 1023px) {

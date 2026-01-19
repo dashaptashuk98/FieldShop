@@ -89,31 +89,13 @@ export default {
     },
 
     handleCloseModal() {
-      this.showAuthModal = false
+      this.showAuthModal = true
     }
   }
 }
 </script>
 
 <style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: 'DM Sans', sans-serif;
-  background-color: #f8f9fa;
-  color: #222;
-}
-
-#app {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
 .modal-enter-active,
 .modal-leave-active {
   transition: opacity 0.3s ease;

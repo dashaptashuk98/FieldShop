@@ -30,7 +30,13 @@
 
         <div class="header__user-actions">
           <div class="cart">
-            <img class="cart__icon" src="@/assets/images/Icon.svg" alt="Shopping cart" />
+            <img
+              class="cart__icon"
+              src="@/assets/images/Icon.svg"
+              alt="Shopping cart"
+              width="24"
+              height="24"
+            />
             <span class="cart__count">{{ cartCount }}</span>
           </div>
 
@@ -42,12 +48,16 @@
                   :src="currentUser.image"
                   :alt="currentUser.firstName"
                   class="user-profile__avatar-image"
+                  width="36"
+                  height="36"
                 />
                 <img
                   v-else
                   src="@/assets/images/user.svg"
                   :alt="currentUser.firstName"
                   class="user-profile__avatar-image"
+                  width="36"
+                  height="36"
                 />
               </div>
               <div class="user-profile__details">
@@ -61,12 +71,20 @@
                 src="@/assets/images/login-svgrepo-com.svg"
                 alt="Logout"
                 class="user-profile__logout-icon"
+                width="18"
+                height="18"
               />
             </button>
           </div>
 
           <div class="auth" v-else @click="openLoginModal">
-            <img src="@/assets/images/user.svg" alt="Login" class="auth__icon" />
+            <img
+              src="@/assets/images/user.svg"
+              alt="Login"
+              class="auth__icon"
+              width="20"
+              height="20"
+            />
             <span class="auth__text">Login</span>
           </div>
         </div>
@@ -98,6 +116,7 @@ export default {
       if (confirm('Are you sure you want to logout?')) {
         this.logout()
         this.$router.push('/')
+        this.$emit('open-login', 'login')
       }
     },
 
@@ -109,14 +128,6 @@ export default {
 </script>
 
 <style scoped>
-.container {
-  max-width: 1920px;
-  margin: 0 auto;
-  width: 100%;
-  padding: 0 100px;
-  box-sizing: border-box;
-}
-
 .header {
   padding: 35px 0;
 }
@@ -142,7 +153,7 @@ export default {
   font:
     400 24px/31px 'DM Sans',
     sans-serif;
-  color: #222;
+  color: var(--color-text-primary);
   opacity: 0.5;
   padding-bottom: 10px;
 }
@@ -158,7 +169,7 @@ export default {
   left: 50%;
   width: 0;
   height: 5px;
-  background: #68d017;
+  background: var(--color-primary);
   border-radius: 4px 4px 0 0;
   transform: translateX(-50%);
 }
@@ -190,8 +201,7 @@ export default {
   left: 16px;
   width: 20px;
   height: 20px;
-  background: #9be198;
-  border: 2px solid #fff;
+  background: var(--color-secondary);
   border-radius: 50%;
   font-size: 12px;
   display: flex;
@@ -216,7 +226,7 @@ export default {
   height: 36px;
   border-radius: 50%;
   overflow: hidden;
-  background: #68d017;
+  background: var(--color-primary);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -237,7 +247,7 @@ export default {
   font-family: 'DM Sans', sans-serif;
   font-size: 14px;
   font-weight: 500;
-  color: #222;
+  color: var(--color-text-primary);
   white-space: nowrap;
 }
 
@@ -264,8 +274,8 @@ export default {
   cursor: pointer;
   padding: 8px 16px;
   border-radius: 20px;
-  background: rgba(104, 208, 23, 0.1);
-  border: 1px solid rgba(104, 208, 23, 0.2);
+  background: var(--color-primary-light);
+  border: 1px solid var(--color-primary-border);
 }
 
 .auth__icon {
@@ -276,7 +286,7 @@ export default {
 .auth__text {
   font-family: 'DM Sans', sans-serif;
   font-size: 14px;
-  color: #222;
+  color: var(--color-text-primary);
   font-weight: 500;
 }
 

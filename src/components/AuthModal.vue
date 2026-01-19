@@ -9,6 +9,7 @@
           <input
             type="text"
             id="login-username"
+            name="login-username"
             class="form__input"
             :class="{ 'form__input--error': loginErrors.username }"
             v-model="loginData.username"
@@ -23,6 +24,7 @@
           <input
             type="password"
             id="login-password"
+            name="login-password"
             class="form__input"
             :class="{ 'form__input--error': loginErrors.password }"
             v-model="loginData.password"
@@ -54,6 +56,7 @@
             <input
               type="text"
               id="reg-firstName"
+              name="reg-firstName"
               class="form__input"
               v-model="registerData.firstName"
               placeholder="Emily"
@@ -65,6 +68,7 @@
             <input
               type="text"
               id="reg-lastName"
+              name="reg-lastName"
               class="form__input"
               v-model="registerData.lastName"
               placeholder="Johnson"
@@ -77,6 +81,7 @@
           <input
             type="text"
             id="reg-username"
+            name="reg-username"
             class="form__input"
             v-model="registerData.username"
             placeholder="emilys"
@@ -88,6 +93,7 @@
           <input
             type="email"
             id="reg-email"
+            name="reg-email"
             class="form__input"
             v-model="registerData.email"
             placeholder="emily@example.com"
@@ -98,6 +104,7 @@
           <input
             type="password"
             id="reg-password"
+            name="reg-password"
             class="form__input"
             v-model="registerData.password"
             placeholder="At least 6 characters"
@@ -233,21 +240,23 @@ export default {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: var(--color-overlay);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
   padding: 20px;
 }
+
 .auth-modal {
-  background: white;
+  background: var(--color-background-white);
   border-radius: 12px;
   padding: 32px;
   width: 100%;
   max-width: 440px;
   position: relative;
 }
+
 .auth-modal__close {
   position: absolute;
   top: 16px;
@@ -258,7 +267,7 @@ export default {
   font-size: 24px;
   line-height: 1;
   cursor: pointer;
-  color: #999;
+  color: var(--color-text-light);
   padding: 4px;
   width: 32px;
   height: 32px;
@@ -267,72 +276,84 @@ export default {
   align-items: center;
   justify-content: center;
 }
+
 .auth-modal__title {
   font-family: 'DM Sans', sans-serif;
   font-size: 28px;
-  color: #222;
+  color: var(--color-text-primary);
   margin: 0 0 24px 0;
   text-align: center;
   font-weight: 500;
 }
+
 .auth-modal__form {
   margin-bottom: 24px;
 }
+
 .auth-modal__divider {
   display: flex;
   align-items: center;
   margin: 24px 0;
-  color: #999;
+  color: var(--color-text-light);
   font-family: 'DM Sans', sans-serif;
   font-size: 14px;
 }
+
 .auth-modal__divider::before,
 .auth-modal__divider::after {
   content: '';
   flex: 1;
   height: 1px;
-  background: #e0e0e0;
+  background: var(--color-border-light);
 }
+
 .auth-modal__divider span {
   padding: 0 16px;
 }
+
 .form__row {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px;
   margin-bottom: 16px;
 }
+
 .form__group {
   margin-bottom: 20px;
 }
+
 .form__label {
   display: block;
   font-family: 'DM Sans', sans-serif;
   font-size: 14px;
   font-weight: 500;
-  color: #555;
+  color: var(--color-text-tertiary);
   margin-bottom: 6px;
 }
+
 .form__input {
   width: 100%;
   padding: 12px 16px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--color-border-light);
   border-radius: 8px;
   font-family: 'DM Sans', sans-serif;
   font-size: 16px;
   color: #333;
   box-sizing: border-box;
 }
+
 .form__input--error {
-  border-color: #ff4444;
-  background-color: #fff8f8;
+  border-color: var(--color-error);
+  background-color: var(--color-error-background);
 }
+
 .form__error {
-  color: #ff4444;
+  color: var(--color-error);
   font-size: 12px;
   margin-top: 4px;
   font-family: 'DM Sans', sans-serif;
 }
+
 .btn {
   padding: 14px 24px;
   border-radius: 8px;
@@ -343,24 +364,29 @@ export default {
   border: 2px solid transparent;
   text-align: center;
 }
+
 .btn:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
+
 .btn--block {
   width: 100%;
   display: block;
 }
+
 .btn--primary {
-  background-color: rgba(104, 208, 23, 1);
+  background-color: var(--color-primary-green);
   color: white;
-  border-color: rgba(104, 208, 23, 1);
+  border-color: var(--color-primary-green);
 }
+
 .btn--outline {
   background-color: transparent;
-  color: rgba(104, 208, 23, 1);
-  border-color: rgba(104, 208, 23, 1);
+  color: rgb(28, 30, 27);
+  border-color: var(--color-primary-green);
 }
+
 @media (max-width: 1023px) {
   .auth-modal {
     padding: 28px;
@@ -369,6 +395,7 @@ export default {
     font-size: 26px;
   }
 }
+
 @media (max-width: 767px) {
   .auth-modal {
     padding: 24px;

@@ -1,7 +1,14 @@
 <template>
   <div class="card">
     <div class="card__image-wrapper">
-      <img :src="image" :alt="altText" class="card__image" />
+      <img
+        :src="image"
+        :alt="altText"
+        class="card__image"
+        loading="lazy"
+        width="550"
+        height="377"
+      />
     </div>
     <div class="card__content">
       <p class="card__text">{{ text }}</p>
@@ -58,14 +65,14 @@ export default {
 
 .card__text {
   padding: 12px 15px;
-  background: rgba(255, 255, 255, 0.95);
-  border: 2px solid #dcdcdc;
+  background: var(--color-background-overlay);
+  border: 2px solid var(--color-border-gray);
   border-radius: 10px;
   font-family: 'DM Sans', sans-serif;
   font-size: 18px;
   font-weight: 400;
   line-height: 24px;
-  color: #353640;
+  color: var(--color-text-secondary);
   text-align: center;
   backdrop-filter: blur(5px);
   margin: 0;
