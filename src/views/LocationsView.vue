@@ -42,6 +42,7 @@
                   iconAlt="Filter"
                   variant="outline"
                   class="locations__btn-filter"
+                  icon-position="right"
                 >
                   Filter
                 </ButtonComponent>
@@ -327,17 +328,20 @@ export default {
   }
   .locations__search-btn {
     height: 46px;
-    width: 110px;
+    min-width: 100px;
+    width: 90px;
     right: 7px;
   }
-  .locations__controls {
-    flex-direction: column;
-    gap: 15px;
-    align-items: stretch;
-  }
+
   .locations__filter {
     justify-content: space-between;
   }
+
+  .locations__btn-filter {
+    width: 92px;
+    min-width: 92px;
+  }
+
   .locations__list-container {
     max-height: 400px;
   }

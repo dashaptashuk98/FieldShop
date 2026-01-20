@@ -57,7 +57,6 @@ export default {
       this.map._animateZoom = function () {}
       this.map._animatePan = function () {}
 
-      // Переопределяем методы с анимацией
       const originalSetView = this.map.setView
       this.map.setView = function (center, zoom, options) {
         return originalSetView.call(this, center, zoom, {
@@ -111,7 +110,9 @@ export default {
           if (layer.remove) {
             try {
               layer.remove()
-            } catch (e) {}
+            } catch (error) {
+              console.warn('Failed to remove layer:', error)
+            }
           }
         })
         this.map.remove()

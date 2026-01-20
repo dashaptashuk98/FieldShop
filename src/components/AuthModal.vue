@@ -1,7 +1,7 @@
 <template>
   <div class="auth-modal__overlay" v-if="activeModal === 'login'">
     <div class="auth-modal">
-      <button class="auth-modal__close" @click="handleClose">×</button>
+      <button class="auth-modal__close" @click="handleClose">x</button>
       <h2 class="auth-modal__title">Login</h2>
       <form class="auth-modal__form" @submit.prevent="handleLoginSubmit">
         <div class="form__group">
@@ -34,15 +34,20 @@
           />
           <div v-if="loginErrors.password" class="form__error">{{ loginErrors.password }}</div>
         </div>
-        <button type="submit" class="btn btn--primary btn--block" :disabled="loginLoading">
+        <ButtonComponent
+          type="submit"
+          variant="primary"
+          :disabled="loginLoading"
+          class="btn--block"
+        >
           <span v-if="!loginLoading">Login to Account</span>
           <span v-else>Logging in...</span>
-        </button>
+        </ButtonComponent>
       </form>
       <div class="auth-modal__divider"><span>Or</span></div>
-      <button class="btn btn--outline btn--block" @click="switchToRegister">
+      <ButtonComponent variant="outline" class="btn--block" @click="switchToRegister">
         Create New Account
-      </button>
+      </ButtonComponent>
     </div>
   </div>
   <div class="auth-modal__overlay" v-else-if="activeModal === 'register'">
@@ -111,22 +116,32 @@
             required
           />
         </div>
-        <button type="submit" class="btn btn--primary btn--block" :disabled="registerLoading">
+        <ButtonComponent
+          type="submit"
+          variant="primary"
+          :disabled="registerLoading"
+          class="btn--block"
+        >
           <span v-if="!registerLoading">Create Account</span>
-          <span v-else>Processing...</span>
-        </button>
+          <span v-else>Creating account...</span>
+        </ButtonComponent>
       </form>
       <div class="auth-modal__divider"><span>Already have an account?</span></div>
-      <button class="btn btn--outline btn--block" @click="switchToLogin">
+      <ButtonComponent variant="outline" class="btn--block" @click="switchToLogin">
         Login to Existing Account
-      </button>
+      </ButtonComponent>
     </div>
   </div>
 </template>
 
 <script>
+import ButtonComponent from './ButtonComponent.vue'
+
 export default {
   name: 'AuthModal',
+  components: {
+    ButtonComponent
+  },
   props: {
     initialModal: {
       type: String,
@@ -215,17 +230,6 @@ export default {
       this.activeModal = 'login'
     },
     handleClose() {
-      if (this.activeModal === 'login') {
-        const hasErrors = this.loginErrors.username || this.loginErrors.password
-        if (hasErrors) {
-          return
-        }
-        const hasEmptyFields = !this.loginData.username.trim() || !this.loginData.password
-        if (hasEmptyFields) {
-          this.validateLoginForm()
-          return
-        }
-      }
       this.$emit('close')
     }
   },
@@ -354,37 +358,9 @@ export default {
   font-family: 'DM Sans', sans-serif;
 }
 
-.btn {
-  padding: 14px 24px;
-  border-radius: 8px;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 16px;
-  font-weight: 500;
-  cursor: pointer;
-  border: 2px solid transparent;
-  text-align: center;
-}
-
-.btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
 .btn--block {
   width: 100%;
   display: block;
-}
-
-.btn--primary {
-  background-color: var(--color-primary-green);
-  color: white;
-  border-color: var(--color-primary-green);
-}
-
-.btn--outline {
-  background-color: transparent;
-  color: rgb(28, 30, 27);
-  border-color: var(--color-primary-green);
 }
 
 @media (max-width: 1023px) {
@@ -406,10 +382,6 @@ export default {
   .form__row {
     grid-template-columns: 1fr;
     gap: 0;
-  }
-  .btn {
-    padding: 12px 20px;
-    font-size: 15px;
   }
 }
 </style>

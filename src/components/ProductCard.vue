@@ -13,14 +13,25 @@
       <p class="product-size">
         <span class="product-label">Size: </span>
         <span class="product-value">{{ product.discountPercentage }}</span>
+        <span class="product-size-images">
+          <img
+            v-for="n in sizeImagesCount"
+            :key="n"
+            src="@/assets/images/grass.png"
+            alt="Size unit"
+            class="size-image"
+            width="25"
+            height="25"
+          />
+        </span>
       </p>
       <p class="product-price">
         <span class="product-label">Price: </span>
         <span class="product-value">${{ product.price }}</span>
       </p>
       <div class="button__container">
-        <ButtonComponent variant="outlineGreen" class="btnInvest">Invest</ButtonComponent>
-        <ButtonComponent variant="Green" class="btnReserve">Reserve</ButtonComponent>
+        <ButtonComponent variant="green-outline" class="btnInvest">Invest</ButtonComponent>
+        <ButtonComponent variant="green-text" class="btnReserve">Reserve</ButtonComponent>
       </div>
     </div>
   </div>
@@ -33,6 +44,15 @@ export default {
   name: 'ProductCard',
   components: {
     ButtonComponent
+  },
+  computed: {
+    sizeImagesCount() {
+      const size = String(this.product.discountPercentage)
+      if (size >= 10) {
+        const firstDigit = parseInt(size[0])
+        return firstDigit
+      } else return 0
+    }
   },
   props: {
     product: {
@@ -71,6 +91,20 @@ export default {
 .product-size,
 .product-price {
   margin: 0;
+  display: flex;
+  gap: 5px;
+}
+
+.product-size-images {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.size-image {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
 }
 
 .product-title {

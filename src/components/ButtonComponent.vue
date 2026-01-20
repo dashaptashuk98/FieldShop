@@ -42,8 +42,7 @@ export default {
     },
     iconPosition: {
       type: String,
-      default: 'left',
-      validator: (value) => ['left', 'right'].includes(value)
+      default: 'left'
     },
     iconAlt: {
       type: String,
@@ -61,7 +60,7 @@ export default {
   justify-content: center;
   gap: 8px;
   padding: 15px 30px;
-  width: 148px;
+  min-width: 148px;
   height: 57px;
   border-radius: 10px;
   font-family: 'DM Sans', sans-serif;
@@ -102,25 +101,25 @@ export default {
 
 .btn--outline {
   background-color: transparent;
-  color: #000000;
-  border: 2px solid #000000;
-}
-
-.btn--outlineGreen {
-  background-color: transparent;
-  color: #000000;
-  border: 2px solid var(--color-primary-green);
-}
-
-.btn--Green {
-  background-color: transparent;
-  color: var(--color-primary-green);
-  border: none;
+  color: var(--color-text-primary);
+  border: 2px solid var(--color-text-primary);
 }
 
 .btn--outline:hover {
   background-color: var(--color-background-light-gray);
   transform: translateY(-2px);
+}
+
+.btn--green-outline {
+  background-color: transparent;
+  color: var(--color-text-primary);
+  border: 2px solid var(--color-primary-green);
+}
+
+.btn--green-text {
+  background-color: transparent;
+  color: var(--color-primary-green);
+  border: none;
 }
 
 .btn:disabled {
@@ -130,7 +129,7 @@ export default {
 
 @media (max-width: 768px) {
   .btn {
-    width: 140px;
+    min-width: 140px;
     height: 50px;
     padding: 12px 24px;
   }

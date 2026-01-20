@@ -37,14 +37,10 @@ export default {
   },
   watch: {
     isAuthenticated(newVal) {
-      if (newVal) {
+      if (!newVal && !this.hasToken) {
+        this.showAuthModal = true
+      } else {
         this.showAuthModal = false
-      } else if (!this.hasToken && !newVal) {
-        setTimeout(() => {
-          if (!this.isAuthenticated) {
-            this.showAuthModal = true
-          }
-        }, 1000)
       }
     }
   },
@@ -89,7 +85,10 @@ export default {
     },
 
     handleCloseModal() {
-      this.showAuthModal = true
+      this.showAuthModal = false
+      setTimeout(() => {
+        this.showAuthModal = true
+      }, 1000)
     }
   }
 }

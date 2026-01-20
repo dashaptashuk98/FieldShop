@@ -51,7 +51,9 @@ export default {
           <h1 class="hero__title">
             Rent your own field, invest in farming, and grow your own vegetables
           </h1>
-          <ButtonComponent @click="handleStartClick">Let's start</ButtonComponent>
+          <ButtonComponent @click="handleStartClick" class="hero__button"
+            >Let's start</ButtonComponent
+          >
         </section>
         <section class="features">
           <ul class="features__list">
@@ -101,6 +103,10 @@ export default {
     400 64px/88px 'DM Serif Text',
     serif;
   color: var(--color-text-secondary);
+}
+
+.hero__button {
+  border: 2px solid rgba(0, 0, 0, 1);
 }
 
 .features__list {

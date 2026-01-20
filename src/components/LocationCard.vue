@@ -13,7 +13,7 @@
           <span class="location-card__title">{{ field.title }}</span>
           <span class="location-card__description">Germany</span>
         </div>
-        <ButtonComponent variant="outlineGreen" class="location-card__btn">Shop</ButtonComponent>
+        <ButtonComponent variant="green-outline" class="location-card__btn">Shop</ButtonComponent>
       </div>
     </div>
   </li>
