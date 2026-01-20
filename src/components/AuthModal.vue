@@ -1,7 +1,6 @@
 <template>
   <div class="auth-modal__overlay" v-if="activeModal === 'login'">
     <div class="auth-modal">
-      <button class="auth-modal__close" @click="handleClose">x</button>
       <h2 class="auth-modal__title">Login</h2>
       <form class="auth-modal__form" @submit.prevent="handleLoginSubmit">
         <div class="form__group">
@@ -52,7 +51,6 @@
   </div>
   <div class="auth-modal__overlay" v-else-if="activeModal === 'register'">
     <div class="auth-modal">
-      <button class="auth-modal__close" @click="handleClose">×</button>
       <h2 class="auth-modal__title">Registration</h2>
       <form class="auth-modal__form" @submit.prevent="handleRegisterSubmit">
         <div class="form__row">
@@ -228,12 +226,9 @@ export default {
     },
     switchToLogin() {
       this.activeModal = 'login'
-    },
-    handleClose() {
-      this.$emit('close')
     }
   },
-  emits: ['close', 'login']
+  emits: ['login']
 }
 </script>
 
@@ -259,26 +254,6 @@ export default {
   width: 100%;
   max-width: 440px;
   position: relative;
-}
-
-.auth-modal__close {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  background: none;
-  border: none;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 24px;
-  line-height: 1;
-  cursor: pointer;
-  color: var(--color-text-light);
-  padding: 4px;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .auth-modal__title {

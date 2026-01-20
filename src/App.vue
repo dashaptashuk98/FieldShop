@@ -4,12 +4,7 @@
 
     <router-view />
 
-    <AuthModal
-      v-if="showAuthModal"
-      :initial-modal="authModalType"
-      @close="handleCloseModal"
-      @login="handleLogin"
-    />
+    <AuthModal v-if="showAuthModal" :initial-modal="authModalType" @login="handleLogin" />
   </div>
 </template>
 
@@ -37,10 +32,10 @@ export default {
   },
   watch: {
     isAuthenticated(newVal) {
-      if (!newVal && !this.hasToken) {
+      if (!newVal && this.hasToken) {
+        this.authModalType = 'login'
         this.showAuthModal = true
-      } else {
-        this.showAuthModal = false
+        this.hasToken = false
       }
     }
   },
@@ -82,13 +77,6 @@ export default {
     openAuthModal() {
       this.authModalType = 'login'
       this.showAuthModal = true
-    },
-
-    handleCloseModal() {
-      this.showAuthModal = false
-      setTimeout(() => {
-        this.showAuthModal = true
-      }, 1000)
     }
   }
 }
