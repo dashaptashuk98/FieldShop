@@ -1,44 +1,43 @@
-# FieldShop
+# Field Shop
 
-This template should help get you started developing with Vue 3 in Vite.
+## How to run the app
 
-## Recommended IDE Setup
+### Install dependencies
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
-
-## Recommended Browser Setup
-
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
-
-## Project Setup
-
-```sh
 npm install
-```
 
-### Compile and Hot-Reload for Development
+### Run in development mode
 
-```sh
 npm run dev
-```
 
-### Compile and Minify for Production
+### Build project
 
-```sh
 npm run build
-```
 
-### Lint with [ESLint](https://eslint.org/)
+Built files will appear in the `dist/` folder
 
-```sh
+### Code linting
+
 npm run lint
-```
+
+## Dependencies
+
+#### Main dependencies:
+
+- **`vue@^3.5.26`** - Core framework
+- **`vue-router@^4.6.4`** - Routing
+- **`vuex@^4.1.0`** - State management
+- **`leaflet@^1.9.4`** - Maps library
+- **`@vue-leaflet/vue-leaflet@^0.10.1`** - Vue wrapper for Leaflet
+
+## Functionality
+
+- **`Authorization`**
+- **`Navigation across three pages`**
+- **`Product search by name`**
+- **`Product sorting in the Shop section`**
+- **`Map viewing capability`**
+
+## Deployment
+
+[App link](https://field-shop.vercel.app/)
