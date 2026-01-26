@@ -6,7 +6,6 @@
   font-display: swap;
 }
 
-/* DM Sans Italic */
 @font-face {
   font-family: 'DM Sans';
   src: url('/fonts/DMSans-Italic.ttf') format('truetype');
@@ -15,16 +14,14 @@
   font-display: swap;
 }
 
-/* DM Sans Bold */
 @font-face {
   font-family: 'DM Sans';
   src: url('/fonts/DMSans-Bold.ttf') format('truetype');
-  font-weight: 700; /* bold */
+  font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 
-/* DM Serif Text Regular */
 @font-face {
   font-family: 'DM Serif Text';
   src: url('/fonts/DMSerifText-Regular.ttf') format('truetype');
@@ -33,7 +30,6 @@
   font-display: swap;
 }
 
-/* DM Serif Text Italic */
 @font-face {
   font-family: 'DM Serif Text';
   src: url('/fonts/DMSerifText-Italic.ttf') format('truetype');
