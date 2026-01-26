@@ -23,7 +23,6 @@
               name="locations-search"
               class="locations__search-input"
               placeholder="Search by title"
-              @keyup.enter="performSearch"
             />
             <ButtonComponent class="locations__search-btn" variant="primary" @click="performSearch">
               Search
@@ -97,7 +96,6 @@ export default {
       },
       set(value) {
         this.$store.commit('locations/SET_SEARCH_TEXT', value)
-        this.searchFields(value)
       }
     },
     ...mapGetters('locations', ['filteredFields'])
