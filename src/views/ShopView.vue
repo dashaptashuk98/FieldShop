@@ -6,7 +6,7 @@
         <div class="shop__header">
           <div class="shop__filter">
             <span class="shop__filter-title">Sort by</span>
-            <select id="sortShop" v-model="sortBy" class="shop__select">
+            <select id="sortShop" v-model="sortBy" class="shop__select" @change="updateSort">
               <option value="all">All</option>
               <option value="price">Price</option>
               <option value="size">Size</option>
@@ -42,6 +42,7 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
 import MapIcon from '@/assets/images/marker-02.svg'
 import FilterIcon from '@/assets/images/filter-edit.svg'
 import ButtonComponent from '@/components/ButtonComponent.vue'
@@ -55,48 +56,37 @@ export default {
   },
   data() {
     return {
-      products: [],
-      loading: false,
-      error: null,
-      MapIcon: MapIcon,
-      FilterIcon: FilterIcon,
-      sortBy: 'all'
+      MapIcon,
+      FilterIcon
     }
   },
   computed: {
-    sortProducts() {
-      if (this.sortBy === 'all') return this.products
-
-      const copy = [...this.products]
-
-      if (this.sortBy === 'price') {
-        return copy.sort((a, b) => a.price - b.price)
+    sortBy: {
+      get() {
+        return this.$store.state.products.sortBy
+      },
+      set(value) {
+        this.$store.commit('products/SET_SORT_BY', value)
       }
-
-      if (this.sortBy === 'size') {
-        return copy.sort((a, b) => a.discountPercentage - b.discountPercentage)
-      }
-
-      return this.products
-    }
+    },
+    ...mapGetters('products', ['sortProducts'])
   },
   async created() {
-    try {
-      const response = await fetch('https://dummyjson.com/products')
-      const data = await response.json()
-      this.products = data.products
-    } catch (error) {
-      console.error('Error fetching data:', error)
-    }
+    await this.fetchProducts()
   },
   methods: {
+    ...mapActions('products', ['fetchProducts']),
+
+    updateSort(event) {
+      this.sortBy = event.target.value
+    },
+
     moveToLocations() {
       this.$router.push('/locations')
     }
   }
 }
 </script>
-
 <style scoped>
 .shop__container {
   max-width: 1920px;

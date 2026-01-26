@@ -6,12 +6,16 @@
           <h1 class="locations__title">Locations</h1>
           <div class="locations__search">
             <img
+              v-if="!searchText"
               class="locations__search-icon"
               src="@/assets/images/search.svg"
               alt="Search"
               width="24"
               height="24"
             />
+            <button v-else class="locations__clear-btn" @click="clearSearch" type="button">
+              <img src="@/assets/images/close.svg" alt="Clear" width="16" height="16" />
+            </button>
             <input
               v-model="searchText"
               type="text"
@@ -19,8 +23,9 @@
               name="locations-search"
               class="locations__search-input"
               placeholder="Search by title"
+              @keyup.enter="performSearch"
             />
-            <ButtonComponent class="locations__search-btn" variant="primary">
+            <ButtonComponent class="locations__search-btn" variant="primary" @click="performSearch">
               Search
             </ButtonComponent>
           </div>
@@ -67,6 +72,7 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
 import ButtonComponent from '@/components/ButtonComponent.vue'
 import SimpleMap from '@/components/MapComponent.vue'
 import LocationCard from '@/components/LocationCard.vue'
@@ -81,28 +87,29 @@ export default {
   },
   data() {
     return {
-      FilterIcon: FilterIcon,
-      fields: [],
-      searchText: ''
+      FilterIcon
     }
   },
   computed: {
-    filteredFields() {
-      if (!this.searchText) {
-        return this.fields
+    searchText: {
+      get() {
+        return this.$store.state.locations.searchText
+      },
+      set(value) {
+        this.$store.commit('locations/SET_SEARCH_TEXT', value)
+        this.searchFields(value)
       }
-      const query = this.searchText.toLowerCase()
-      return this.fields.filter((field) => field.title.toLowerCase().includes(query))
-    }
+    },
+    ...mapGetters('locations', ['filteredFields'])
   },
   async created() {
-    try {
-      const response = await fetch('https://dummyjson.com/products')
-      const data = await response.json()
-      this.fields = data.products
-    } catch (error) {
-      console.error('Error fetching data:', error)
-      this.fields = []
+    await this.fetchLocations()
+  },
+  methods: {
+    ...mapActions('locations', ['fetchLocations', 'searchFields', 'clearSearch']),
+
+    performSearch() {
+      this.searchFields(this.searchText)
     }
   }
 }
@@ -153,7 +160,8 @@ export default {
   max-width: 900px;
 }
 
-.locations__search-icon {
+.locations__search-icon,
+.locations__clear-btn {
   position: absolute;
   left: 25px;
   top: 50%;
@@ -161,6 +169,25 @@ export default {
   width: 24px;
   height: 24px;
   z-index: 2;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.locations__clear-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.locations__clear-btn img {
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+
+.locations__clear-btn:hover img {
+  opacity: 1;
 }
 
 .locations__search-input {
@@ -321,7 +348,8 @@ export default {
     padding-right: 130px;
     font-size: 16px;
   }
-  .locations__search-icon {
+  .locations__search-icon,
+  .locations__clear-btn {
     left: 15px;
     width: 20px;
     height: 20px;

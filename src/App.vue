@@ -11,7 +11,7 @@
 <script>
 import AppHeader from './components/AppHeader.vue'
 import AuthModal from './components/AuthModal.vue'
-import { mapState, mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'App',
@@ -27,8 +27,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['isAuthenticated', 'token']),
-    ...mapGetters(['currentUser'])
+    ...mapGetters('auth', ['isAuthenticated', 'currentUser'])
   },
   watch: {
     isAuthenticated(newVal) {
@@ -61,7 +60,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['login', 'logout', 'fetchCurrentUser']),
+    ...mapActions('auth', ['login', 'logout', 'fetchCurrentUser']),
 
     async handleLogin(loginData) {
       const result = await this.login(loginData)

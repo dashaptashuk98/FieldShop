@@ -106,11 +106,11 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['isAuthenticated', 'currentUser'])
+    ...mapGetters('auth', ['isAuthenticated', 'currentUser'])
   },
 
   methods: {
-    ...mapActions(['logout']),
+    ...mapActions('auth', ['login', 'logout']),
 
     handleLogout() {
       if (confirm('Are you sure you want to logout?')) {
